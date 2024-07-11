@@ -1,8 +1,31 @@
 import express from "express"
 import Book from "../models/Book.js"
 import BookCategory from "../models/BookCategory.js"
-
+import multer from "multer";
+import mongoose from "mongoose";
 const router = express.Router()
+
+
+
+const upload = multer({
+  dest: '../frontend/public/assets/coverImages',
+  fileFilter(req, file, cb) {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only JPG and PNG images are allowed'));
+    }
+  },
+  limits: {
+    fileSize: 1024 * 1024 * 5, // 5MB
+  },
+  error: (err, req, res, next) => {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(413).json({ message: 'File too large, File should be below 5 MB' });
+    } else {
+      next(err);
+    }},
+}); // configure the upload directory
 
 
 // get total number of books
@@ -59,26 +82,38 @@ router.get("/", async (req, res) => {
 })
 
 /* Adding book */
-router.post("/addbook", async (req, res) => {
+router.post('/addbook', upload.single('bookCoverImage'), async (req, res) => {
     if (req.body.isAdmin) {
-        try {
+        let categories = [];
+        if (Array.isArray(req.body.categories)) {
+            for (let category of req.body.categories) {
+                if (mongoose.Types.ObjectId.isValid(category)) {
+                    categories.push(mongoose.Types.ObjectId(category));
+                } else {
+                    return res.status(400).json(`Invalid category ObjectId: ${category}`);
+                }
+            }
+        } else {
+            if (mongoose.Types.ObjectId.isValid(req.body.categories)) {
+                categories.push(mongoose.Types.ObjectId(req.body.categories));
+            } else {
+                return res.status(400).json(`Invalid category ObjectId: ${req.body.categories}`);
+            }
+        }
             const newbook = await new Book({
                 bookName: req.body.bookName,
                 alternateTitle: req.body.alternateTitle,
                 author: req.body.author,
                 bookCountAvailable: req.body.bookCountAvailable,
                 language: req.body.language,
+                bookCoverImage: req.file.buffer, // or req.file.path, depending on how you want to store the image
                 publisher: req.body.publisher,
                 bookStatus: req.body.bookSatus,
-                categories: req.body.categories
+                categories
             })
             const book = await newbook.save()
-            await BookCategory.updateMany({ '_id': book.categories }, { $push: { books: book._id } });
+            await BookCategory.updateMany({ '_id': { $in: categories } }, { $push: { books: book._id } });
             res.status(200).json(book)
-        }
-        catch (err) {
-            res.status(504).json(err)
-        }
     }
     else {
         return res.status(403).json("You dont have permission to add a book!");

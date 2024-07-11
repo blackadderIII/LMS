@@ -4,6 +4,7 @@ import axios from "axios"
 import { AuthContext } from '../../../../Context/AuthContext'
 import { Dropdown } from 'semantic-ui-react'
 
+
 function AddBook() {
 
     const API_URL = process.env.REACT_APP_API_URL
@@ -15,6 +16,7 @@ function AddBook() {
     const [author, setAuthor] = useState("")
     const [bookCountAvailable, setBookCountAvailable] = useState(null)
     const [language, setLanguage] = useState("")
+    const [bookCoverImage, setBookCoverImage] = useState(null);
     const [publisher, setPublisher] = useState("")
     const [allCategories, setAllCategories] = useState([])
     const [selectedCategories, setSelectedCategories] = useState([])
@@ -42,18 +44,25 @@ function AddBook() {
     const addBook = async (e) => {
         e.preventDefault()
         setIsLoading(true)
-        const BookData = {
-            bookName: bookName,
-            alternateTitle: alternateTitle,
-            author: author,
-            bookCountAvailable: bookCountAvailable,
-            language: language,
-            publisher: publisher,
-            categories: selectedCategories,
-            isAdmin: user.isAdmin
+        const formData = new FormData();
+        formData.append('bookName', bookName);
+        formData.append('alternateTitle', alternateTitle);
+        formData.append('author', author);
+        formData.append('bookCountAvailable', bookCountAvailable);
+        formData.append('language', language);
+        formData.append('publisher', publisher);
+        formData.append('categories', JSON.stringify(selectedCategories));
+        formData.append('isAdmin', user.isAdmin);
+      
+        if (bookCoverImage) {
+          formData.append('bookCoverImage', bookCoverImage);
         }
         try {
-            const response = await axios.post(API_URL + "api/books/addbook", BookData)
+            const response = await axios.post(API_URL + "api/books/addbook", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             if (recentAddedBooks.length >= 5) {
                 recentAddedBooks.splice(-1)
             }
@@ -63,12 +72,19 @@ function AddBook() {
             setAuthor("")
             setBookCountAvailable(null)
             setLanguage("")
+            setBookCoverImage(null)
             setPublisher("")
             setSelectedCategories([])
+            setIsLoading(false)
             alert("Book Added Successfully 🎉")
         }
-        catch (err) {
-            console.log(err)
+        catch (error) {
+            if (error.response && error.response.status === 413) {
+                alert("File size too large, File should be less than 5 MB");
+              } else {
+                console.log(error);
+              }
+            setIsLoading(false)
         }
         setIsLoading(false)
     }
@@ -100,7 +116,12 @@ function AddBook() {
 
                 <label className="addbook-form-label" htmlFor="language">Language</label><br />
                 <input className="addbook-form-input" type="text" name="language" value={language} onChange={(e) => { setLanguage(e.target.value) }}></input><br />
-
+                <label className="addbook-form-label" htmlFor="bookCoverImage">Book Cover Image</label><br />
+                <input
+                type="file"
+                 name="bookCoverImage"
+                 onChange={(e) => setBookCoverImage(e.target.files[0])}
+                 /><br />
                 <label className="addbook-form-label" htmlFor="publisher">Publisher</label><br />
                 <input className="addbook-form-input" type="text" name="publisher" value={publisher} onChange={(e) => { setPublisher(e.target.value) }}></input><br />
 
@@ -121,7 +142,7 @@ function AddBook() {
                     />
                 </div>
 
-                <input className="addbook-submit" type="submit" value="SUBMIT" disabled={isLoading}></input>
+                {isLoading ? (<input className="addbook-submit" type="submit" value="SUBMIT"><div className='loading-mini'></div></input>):(<input className="addbook-submit" type="submit" value="SUBMIT" disabled={isLoading}></input>)}
             </form>
             <div>
                 <p className="dashboard-option-title">Recently Added Books</p>
