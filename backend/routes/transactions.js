@@ -40,6 +40,17 @@ router.get("/all-transactions", async (req, res) => {
     }
 })
 
+router.get("/countTransactions", async (req, res) => {
+    try {
+        const transactionsCount = await BookTransaction.countDocuments();
+        // counts number of transactions
+        res.status(200).json(transactionsCount)
+    }
+    catch (err) {
+        return res.status(504).json(err)
+    }
+})
+
 router.put("/update-transaction/:id", async (req, res) => {
     try {
         if (req.body.isAdmin) {
