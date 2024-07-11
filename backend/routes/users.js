@@ -26,6 +26,16 @@ router.get("/allmembers", async (req,res)=>{
     }
 })
 
+// user stats
+router.get("/countmembers", async (req, res) => {
+    try {
+      const usercount = await User.countDocuments(); // count the number of users
+      res.status(200).json({usercount});
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  });
+
 /* Update user by id */
 router.put("/updateuser/:id", async (req, res) => {
     if (req.body.userId === req.params.id || req.body.isAdmin) {
