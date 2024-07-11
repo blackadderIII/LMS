@@ -18,8 +18,8 @@ const BookSchema = new mongoose.Schema({
         default:""
     },
     bookCoverImage: {
-        type: Buffer, // or Buffer, depending on how you want to store the image
-        default: null // or null, depending on your preference
+        type: String, 
+        default: null 
     },
     publisher:{
         type:String,
