@@ -27,7 +27,7 @@ function Stats() {
             } 
         }
         getTotalBooks()
-    },[])
+    },[API_URL])
 
     useEffect(()=>{
         const getTotalMembers = async ()=>{
@@ -41,7 +41,7 @@ function Stats() {
             } 
         }
         getTotalMembers()
-    },[])
+    },[API_URL])
 
     useEffect(()=>{
         const getTotalTransactions = async ()=>{
@@ -55,7 +55,7 @@ function Stats() {
             } 
         }
         getTotalTransactions()
-    },[])
+    },[API_URL])
 
     return (
         <div className='stats'>
