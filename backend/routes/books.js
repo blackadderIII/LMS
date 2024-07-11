@@ -4,28 +4,34 @@ import BookCategory from "../models/BookCategory.js"
 import multer from "multer";
 import mongoose from "mongoose";
 const router = express.Router()
-
-
+import * as fs from 'fs';
 
 const upload = multer({
-  dest: '../frontend/public/assets/coverImages',
-  fileFilter(req, file, cb) {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-      cb(null, true);
-    } else {
-      cb(new Error('Only JPG and PNG images are allowed'));
-    }
-  },
-  limits: {
-    fileSize: 1024 * 1024 * 5, // 5MB
-  },
-  error: (err, req, res, next) => {
+    storage: multer.diskStorage({
+      destination: '../frontend/public/assets/coverImages',
+      filename: (req, file, cb) => {
+        cb(null, file.originalname);
+      },
+    }),
+    fileFilter(req, file, cb) {
+      if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true);
+      } else {
+        cb(new Error('Only JPG and PNG images are allowed'));
+      }
+    },
+    limits: {
+      fileSize: 1024 * 1024 * 5, // 5MB
+    },
+  });
+  
+  upload.error = (err, req, res, next) => {
     if (err.code === 'LIMIT_FILE_SIZE') {
       return res.status(413).json({ message: 'File too large, File should be below 5 MB' });
     } else {
       next(err);
-    }},
-}); // configure the upload directory
+    }
+  };// configure the upload directory
 
 
 // get total number of books
@@ -44,7 +50,6 @@ router.get("/booksTotal", async (req, res) => {
       return res.status(504).json(err);
     }
   });
-
 
 
 /* Get all books in the db */
@@ -83,42 +88,34 @@ router.get("/", async (req, res) => {
 
 /* Adding book */
 router.post('/addbook', upload.single('bookCoverImage'), async (req, res) => {
-    if (req.body.isAdmin) {
+    if (!req.body.isAdmin) {
+        return res.status(403).json("You don't have permission to add a book!");
+      }         
         let categories = [];
-        if (Array.isArray(req.body.categories)) {
-            for (let category of req.body.categories) {
-                if (mongoose.Types.ObjectId.isValid(category)) {
-                    categories.push(mongoose.Types.ObjectId(category));
-                } else {
-                    return res.status(400).json(`Invalid category ObjectId: ${category}`);
-                }
-            }
-        } else {
-            if (mongoose.Types.ObjectId.isValid(req.body.categories)) {
-                categories.push(mongoose.Types.ObjectId(req.body.categories));
-            } else {
-                return res.status(400).json(`Invalid category ObjectId: ${req.body.categories}`);
-            }
-        }
+        if (req.body.categories) {
+            categories = JSON.parse(req.body.categories);
+            categories = categories.filter(category => mongoose.Types.ObjectId.isValid(category));
+            categories = categories.map(category => mongoose.Types.ObjectId(category));
+          }
+          const fileBuffer = fs.readFileSync(req.file.path);
+          const bookCoverImage = fileBuffer.toString('base64');
+
             const newbook = await new Book({
                 bookName: req.body.bookName,
                 alternateTitle: req.body.alternateTitle,
                 author: req.body.author,
                 bookCountAvailable: req.body.bookCountAvailable,
                 language: req.body.language,
-                bookCoverImage: req.file.buffer, // or req.file.path, depending on how you want to store the image
+                bookCoverImage,
                 publisher: req.body.publisher,
-                bookStatus: req.body.bookSatus,
-                categories
+                bookStatus: req.body.bookStatus,
+                categories,
             })
             const book = await newbook.save()
-            await BookCategory.updateMany({ '_id': { $in: categories } }, { $push: { books: book._id } });
+             await Promise.all(categories.map((categoryId) => BookCategory.updateOne({ _id: categoryId }, { $push: { books: book._id } })));
             res.status(200).json(book)
     }
-    else {
-        return res.status(403).json("You dont have permission to add a book!");
-    }
-})
+)
 
 /* update book */
 router.put("/updatebook/:id", async (req, res) => {
