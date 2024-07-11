@@ -4,6 +4,26 @@ import BookCategory from "../models/BookCategory.js"
 
 const router = express.Router()
 
+
+// get total number of books
+router.get("/booksTotal", async (req, res) => {
+    try {
+      const totalBookCount = await Book.aggregate([
+        {
+          $group: {
+            _id: null,
+            totalBookCount: { $sum: "$bookCountAvailable" }
+          }
+        }
+      ]);
+      res.status(200).json({ totalBookCount: totalBookCount[0].totalBookCount });
+    } catch (err) {
+      return res.status(504).json(err);
+    }
+  });
+
+
+
 /* Get all books in the db */
 router.get("/allbooks", async (req, res) => {
     try {
@@ -61,11 +81,11 @@ router.post("/addbook", async (req, res) => {
         }
     }
     else {
-        return res.status(403).json("You dont have permission to delete a book!");
+        return res.status(403).json("You dont have permission to add a book!");
     }
 })
 
-/* Addding book */
+/* update book */
 router.put("/updatebook/:id", async (req, res) => {
     if (req.body.isAdmin) {
         try {
@@ -79,7 +99,7 @@ router.put("/updatebook/:id", async (req, res) => {
         }
     }
     else {
-        return res.status(403).json("You dont have permission to delete a book!");
+        return res.status(403).json("You dont have permission to add a book!");
     }
 })
 
