@@ -11,6 +11,7 @@
     gap: 20px;
     padding: 15px;
     max-width: 1024px;
+    background-color: pink;
 }
 
 .book-card{
@@ -58,8 +59,10 @@
     display: flex;
     flex-wrap: wrap;
     position: absolute;
+    width: 90%;
     bottom: 5%;
     left: 5%;
+    justify-content: space-between;
 }
 
 .bookcard-category p{
@@ -70,6 +73,13 @@
     border-radius: 5px;
 }
 
+.bookcard-category span{
+    padding: 8px 15px;
+    background-color: rgb(47, 226, 31);
+    font-weight: 700;
+    margin: 5px;
+    border-radius: 5px;
+}
 .bookcard-emptybox{
     height: 50px;
     position: relative;

@@ -1,11 +1,53 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
 import "./Allbooks.css";
+import axios from "axios";
 
 function Allbooks() {
+  const API_URL = process.env.REACT_APP_API_URL;
+
+  const [books,setBooks] = useState([]);
+  const [loading,setLoading] = useState(true);
+
+    useEffect(()=>{
+      const getBooks = async () => {
+      try {
+        const result = await axios.get(
+          API_URL + "api/books/allbooks"
+        );
+        setBooks(result.data);
+        setLoading(false)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getBooks()
+    },[])
+
+
   return (
     <div className="books-page">
       <div className="books">
-        <div className="book-card">
+
+      {loading ? (<div className="loading"></div>):(
+        books.map((book)=>(
+          <div className="book-card" key={book._Id}>
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp16xiXu1ZtTzbLy-eSwEK4Ng6cUpUZnuGbQ&usqp=CAU"
+            alt=""
+          ></img>
+          <p className="bookcard-title">{book.bookName}</p>
+          <p className="bookcard-author">{book.
+            author}</p>
+          <div className="bookcard-category">
+            <p>{book.language}</p>
+            <span>Available Copies : {book.bookCountAvailable}</span>
+          </div>
+          <div className="bookcard-emptybox"></div>
+          </div>
+        ))
+
+      )}
+        {/* <div className="book-card">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp16xiXu1ZtTzbLy-eSwEK4Ng6cUpUZnuGbQ&usqp=CAU"
             alt=""
@@ -16,8 +58,8 @@ function Allbooks() {
             <p>Auto Biography</p>
           </div>
           <div className="bookcard-emptybox"></div>
-        </div>
-        <div className="book-card">
+        </div> */}
+        {/* <div className="book-card">
           <img
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-Rb2t6jA5ml7n57qdTZbAOWX1qSfsLCbaOA&usqp=CAU"
             alt=""
@@ -52,7 +94,7 @@ function Allbooks() {
             <p>COMIC</p>
           </div>
           <div className="bookcard-emptybox"></div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

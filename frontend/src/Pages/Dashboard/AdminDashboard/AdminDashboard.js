@@ -31,7 +31,7 @@ document.head.appendChild(styleLink);
 
 function AdminDashboard() {
 
-    const [active, setActive] = useState("addbooks")
+    const [active, setActive] = useState("profile")
     const [sidebar, setSidebar] = useState(false)
 
     const API_URL = process.env.REACT_APP_API_URL;
@@ -86,7 +86,7 @@ function AdminDashboard() {
                 </div>
                 <div className="dashboard-option-content">
 
-                <div className="member-profile-content" id="profile@member">
+                    <div className="member-profile-content" style={active !== "profile" ? { display: 'none' } : {}} id="profile@member">
             <div className="user-details-topbar">
               <img
                 className="user-profileimage"
@@ -143,7 +143,7 @@ function AdminDashboard() {
                   </p>
                 </div>
               </div>
-              <div className="specific-right">
+              {/* <div className="specific-right">
                 <div className="specific-right-top">
                   <p className="specific-right-topic">
                     <b>Points</b>
@@ -179,9 +179,10 @@ function AdminDashboard() {
                     {memberDetails?.points}
                   </p>
                 </div>
-              </div>
+              </div> */}
             </div>
-          </div>
+                    </div>
+                    
                     <div className="dashboard-addbooks-content" style={active !== "addbook" ? { display: 'none' } : {}}>
                         <AddBook />
                     </div>

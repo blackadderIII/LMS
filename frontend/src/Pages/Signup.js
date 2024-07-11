@@ -15,7 +15,7 @@ const Signup = () => {
     mobileNumber: "",
     email: "",
     password: "",
-    isAdmin: false,
+    isAdmin: true,
   });
 
   const [error, setError] = useState();

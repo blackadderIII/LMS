@@ -6,6 +6,10 @@
   overflow-y: scroll;
 }
 
+.user-profileimage{
+  border-radius: 50%;
+}
+
 .member-profile-content,
 .member-activebooks-content,
 .member-reservedbooks-content,
