@@ -21,7 +21,7 @@ function Header() {
         <div className="header">
             <div className="logo-nav">
             <Link to='/'>
-                <a href="#home">LIBRARY</a>
+                <a href="#home">KLS</a>
             </Link>
             </div>
             <div className='nav-right'>

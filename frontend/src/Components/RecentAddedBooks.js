@@ -25,23 +25,38 @@ function RecentAddedBooks() {
     return (
         <div className='recentaddedbooks-container'>
             <h className='recentbooks-title'>Recent Uploads</h>
-            <div className='recentbooks'>
             {loading ? (
           <div className='loading-mini'></div>
         ) : recentBook.length > 0 ? (
-          <div className='images'>
-            {recentBook.map((book) => (
-              <img
-                className='recent-book'
-                key={book._id}
-                src={
-                  book.bookCoverImage
-                    ? `data:image/jpeg;base64,${book.bookCoverImage}`
-                    : 'assets/coverImages/default.png'
-                }
-                alt=''
-              />
-            ))}
+            <div className='recentbooks'>
+            <div className='images'>
+              {recentBook.map((book) => (
+                <img
+                  className='recent-book'
+                  key={book._id}
+                  src={
+                    book.bookCoverImage
+                     ? `data:image/jpeg;base64,${book.bookCoverImage}`
+                      : 'assets/coverImages/default.png'
+                  }
+                  alt=''
+                />
+              ))}
+            </div>
+            <div className='images'>
+              {recentBook.map((book) => (
+                <img
+                  className='recent-book'
+                  key={book._id + '_duplicate'} // Add a suffix to the key
+                  src={
+                    book.bookCoverImage
+                     ? `data:image/jpeg;base64,${book.bookCoverImage}`
+                      : 'assets/coverImages/default.png'
+                  }
+                  alt=''
+                />
+              ))}
+            </div>
           </div>
         ) : (
           <div className='no-books'>
@@ -50,7 +65,6 @@ function RecentAddedBooks() {
           </div>
         )}
             </div>
-        </div>
     )
 }
 
