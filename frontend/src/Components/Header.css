@@ -37,9 +37,6 @@
     visibility: hidden;
 }
 
-.search-input .active{
-    visibility: visible;
-} 
 
 .nav-options{
     padding-left: 25px;
