@@ -21,7 +21,7 @@ const upload = multer({
       }
     },
     limits: {
-      fileSize: 1024 * 1024 * 5, // 5MB
+      fileSize: 1024 * 1024 * 2, // 2MB
     },
   });
   
@@ -97,10 +97,12 @@ router.post('/addbook', upload.single('bookCoverImage'), async (req, res) => {
             categories = categories.filter(category => mongoose.Types.ObjectId.isValid(category));
             categories = categories.map(category => mongoose.Types.ObjectId(category));
           }
-          const fileBuffer = fs.readFileSync(req.file.path);
-          const bookCoverImage = fileBuffer.toString('base64');
+          if (req.file) {
+            try {
+              const fileBuffer = fs.readFileSync(req.file.path);
+              const bookCoverImage = fileBuffer.toString('base64');
 
-            const newbook = await new Book({
+              const newbook = await new Book({
                 bookName: req.body.bookName,
                 alternateTitle: req.body.alternateTitle,
                 author: req.body.author,
@@ -113,7 +115,29 @@ router.post('/addbook', upload.single('bookCoverImage'), async (req, res) => {
             })
             const book = await newbook.save()
              await Promise.all(categories.map((categoryId) => BookCategory.updateOne({ _id: categoryId }, { $push: { books: book._id } })));
-            res.status(200).json(book)
+            return res.status(200).json(book)
+            } catch (err) {
+              console.error(err);
+              return res.json({message:"Error adding book,please try again later"})
+            }
+          } else {
+            const bookCoverImage = null;
+            
+            const newbook = await new Book({
+              bookName: req.body.bookName,
+              alternateTitle: req.body.alternateTitle,
+              author: req.body.author,
+              bookCountAvailable: req.body.bookCountAvailable,
+              language: req.body.language,
+              bookCoverImage,
+              publisher: req.body.publisher,
+              bookStatus: req.body.bookStatus,
+              categories,
+          })
+          const book = await newbook.save()
+           await Promise.all(categories.map((categoryId) => BookCategory.updateOne({ _id: categoryId }, { $push: { books: book._id } })));
+          return res.status(200).json(book)
+          }
     }
 )
 
