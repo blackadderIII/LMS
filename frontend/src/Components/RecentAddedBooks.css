@@ -30,6 +30,19 @@
     animation-play-state: paused;
 }
 
+.no-books{
+    margin-left: 50%;
+    color: white;
+}
+.no-books img{
+    height: 20px;
+    width: auto;
+}
+.no-books p{
+    margin-left: -28%;
+}
+
+
 .images{
     animation: marquee 15s linear infinite;
     display: flex;

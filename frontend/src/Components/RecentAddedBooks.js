@@ -27,7 +27,7 @@ function RecentAddedBooks() {
             <h className='recentbooks-title'>Recent Uploads</h>
             <div className='recentbooks'>
             {loading ? (
-          <div className='loading'></div>
+          <div className='loading-mini'></div>
         ) : recentBook.length > 0 ? (
           <div className='images'>
             {recentBook.map((book) => (
