@@ -32,7 +32,7 @@ function Allbooks() {
         books.map((book)=>(
           <div className="book-card" key={book._Id}>
           <img
-            src={`data:image/jpeg;base64,${book.bookCoverImage.toString('base64')}`}
+             src={book.bookCoverImage ? `data:image/jpeg;base64,${book.bookCoverImage}` : "assets/coverImages/default.png"}
             alt=""
           ></img>
           <p className="bookcard-title">{book.bookName}</p>
