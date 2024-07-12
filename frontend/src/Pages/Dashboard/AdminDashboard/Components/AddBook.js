@@ -18,7 +18,8 @@ function AddBook() {
     const [language, setLanguage] = useState("")
     const [bookCoverImage, setBookCoverImage] = useState(null);
     const [publisher, setPublisher] = useState("")
-    const [allCategories, setAllCategories] = useState([])
+    const [allCategories, setAllCategories] = useState([]);
+    const [newCategory,setNewCategory] = useState([])
     const [selectedCategories, setSelectedCategories] = useState([])
     const [recentAddedBooks, setRecentAddedBooks] = useState([])
 
@@ -60,17 +61,17 @@ function AddBook() {
         try {
             const response = await axios.post(API_URL + "api/books/addbook", formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
                 }
             });
             if (recentAddedBooks.length >= 5) {
                 recentAddedBooks.splice(-1)
             }
-            setRecentAddedBooks([response.data, ...recentAddedBooks])
+            setRecentAddedBooks([ ...recentAddedBooks,response.data])
             setBookName("")
             setAlternateTitle("")
             setAuthor("")
-            setBookCountAvailable(null)
+            setBookCountAvailable("")
             setLanguage("")
             setBookCoverImage(null)
             setPublisher("")
@@ -86,7 +87,6 @@ function AddBook() {
               }
             setIsLoading(false)
         }
-        setIsLoading(false)
     }
 
 
@@ -98,6 +98,16 @@ function AddBook() {
         getallBooks()
     }, [API_URL])
 
+
+    const handleCategory = (e) =>{
+        e.preventDefault();
+        axios.post(API_URL + "api/categories/addcategory", { categoryName: newCategory })
+      .then(response => {
+        setAllCategories([...allCategories, { value: response.data._id, text: response.data.categoryName }]);
+        setNewCategory('');
+      })
+      .catch(error => console.error(error));
+    }
 
     return (
         <div>
@@ -120,7 +130,15 @@ function AddBook() {
                 <input
                 type="file"
                  name="bookCoverImage"
-                 onChange={(e) => setBookCoverImage(e.target.files[0])}
+                 onChange={(e) => { const file = e.target.files[0];
+    const fileSizeInMB = file.size / (1024 * 1024);
+    if (fileSizeInMB > 3) {
+      alert("File size exceeds 2MB");
+      setBookCoverImage(null);
+    } else {
+      setBookCoverImage(file);
+    }
+  }}
                  /><br />
                 <label className="addbook-form-label" htmlFor="publisher">Publisher</label><br />
                 <input className="addbook-form-input" type="text" name="publisher" value={publisher} onChange={(e) => { setPublisher(e.target.value) }}></input><br />
@@ -129,20 +147,29 @@ function AddBook() {
                 <input className="addbook-form-input" type="text" name="copies" value={bookCountAvailable} onChange={(e) => { setBookCountAvailable(e.target.value) }} required></input><br />
 
                 <label className="addbook-form-label" htmlFor="categories">Categories<span className="required-field">*</span></label><br />
-                <div className="semanticdropdown">
-                    <Dropdown
-                        placeholder='Category'
-                        fluid
-                        multiple
-                        search
-                        selection
-                        options={allCategories}
-                        value={selectedCategories}
-                        onChange={(event, value) => setSelectedCategories(value.value)}
-                    />
-                </div>
+<div className="semanticdropdown">
+  <Dropdown
+    placeholder='Category'
+    fluid
+    multiple
+    search
+    selection
+    options={allCategories}
+    value={selectedCategories}
+    onChange={(event, value) => setSelectedCategories(value.value)}
+  />
+  <input
+    type="text"
+    placeholder="Type in a new category"
+    value={newCategory}
+    onChange={(e) => setNewCategory(e.target.value)}
+  />
+  <button onClick={() => {
+    handleCategory()
+  }}>Add Category</button>
+</div>
 
-                {isLoading ? (<input className="addbook-submit" type="submit" value="SUBMIT"><div className='loading-mini'></div></input>):(<input className="addbook-submit" type="submit" value="SUBMIT" disabled={isLoading}></input>)}
+<button className="addbook-submit" onClick={(e)=>addBook(e)}>{isLoading ? <div className='loading-mini'></div> : "SUBMIT"}</button>
             </form>
             <div>
                 <p className="dashboard-option-title">Recently Added Books</p>
