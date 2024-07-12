@@ -41,31 +41,6 @@ function ReservedBooks() {
                         )
                     })
                 }
-                {/* <tr>
-                    <td>Sheperd</td>
-                    <td>The Subtle Art</td>
-                    <td>10/7/2024</td>
-                </tr>
-                <tr>
-                    <td>Placeholder</td>
-                    <td>Wings Of Fire</td>
-                    <td>15/9/2024</td>
-                </tr>
-                <tr>
-                    <td>Placeholder</td>
-                    <td>The Secret</td>
-                    <td>02/9/2024</td>
-                </tr>
-                <tr>
-                    <td>Placeholder</td>
-                    <td>Bad Guys</td>
-                    <td>21/7/2024</td>
-                </tr>
-                <tr>
-                    <td>Placeholder</td>
-                    <td>Giovanni Rovelli</td>
-                    <td>02/7/2024</td>
-                </tr> */}
             </table>
         </div>
     )
