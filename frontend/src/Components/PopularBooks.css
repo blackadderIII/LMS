@@ -50,15 +50,15 @@
 }
 
 .no-books{
-    margin-left: 50%;
-    color: white;
+    margin-left: 49%;
 }
 .no-books img{
     height: 20px;
     width: auto;
 }
-.no-books p{
-    margin-left: -28%;
+.no-books .popularbook{
+    margin-left: -35%;
+    color: black;
 }
 
 @keyframes marquee {

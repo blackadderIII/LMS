@@ -31,8 +31,8 @@
 }
 
 .no-books{
-    margin-left: 50%;
-    color: white;
+    margin-left: 49%;
+    
 }
 .no-books img{
     height: 20px;
@@ -40,6 +40,7 @@
 }
 .no-books p{
     margin-left: -28%;
+    color: white;
 }
 
 
