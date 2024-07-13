@@ -39,6 +39,25 @@
   animation: spin 0.7s linear infinite;
 }
 
+
+/* Mobile View */
+@media screen and (max-width:768px){
+  .loading {
+    width: 50px;
+    height: 50px;
+    border-top: 4px solid greenyellow;
+    border-left: 4px solid greenyellow;
+    border-right: 4px solid greenyellow;
+    border-bottom: 4px solid transparent;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 45%;
+    transform: translate(-50%, -50%);
+    animation: spin 0.7s linear infinite;
+  }
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
