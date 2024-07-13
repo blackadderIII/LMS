@@ -43,6 +43,21 @@
     color: white;
 }
 
+/* Mobile View */
+@media screen and (max-width:768px){
+    .no-books{
+        margin-left: 45%;
+        
+    }
+    .no-books img{
+        height: 20px;
+        width: auto;
+    }
+    .no-books p{
+        margin-left: -18%;
+        color: white;
+    }
+}
 
 .images{
     animation: marquee 15s linear infinite;
