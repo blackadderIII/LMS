@@ -61,6 +61,24 @@
     color: black;
 }
 
+
+/* Mobile View */
+@media screen and (max-width:768px){
+    .no-books{
+        margin-left: 45%;
+        
+    }
+    .no-books img{
+        height: 20px;
+        width: auto;
+    }
+    .no-books .popularbook{
+        margin-left: -23%;
+        color: black;
+    }
+}
+
+
 @keyframes marquee {
 	0%   { transform: translateX(0%); }
 	100% { transform: translateX(-100%); }
