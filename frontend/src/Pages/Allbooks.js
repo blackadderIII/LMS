@@ -1,27 +1,34 @@
 import React, { useEffect,useState } from "react";
 import "./Allbooks.css";
 import axios from "axios";
+import { useContext } from 'react';
+import { SearchContext } from '../Context/searchContext.js';
 
 function Allbooks() {
   const API_URL = process.env.REACT_APP_API_URL;
-
+  const { searchResult } = useContext(SearchContext);
   const [books,setBooks] = useState([]);
   const [loading,setLoading] = useState(true);
 
     useEffect(()=>{
-      const getBooks = async () => {
-      try {
-        const result = await axios.get(
-          API_URL + "api/books/allbooks"
-        );
-        setBooks(result.data);
+      if (searchResult.length > 0) {
+        setLoading(true)
+        setBooks(searchResult);
         setLoading(false)
-      } catch (error) {
-        console.log(error)
+      } else {
+        setLoading(true)
+        const getBooks = async () => {
+          try {
+            const result = await axios.get(API_URL + "api/books/allbooks");
+            setBooks(result.data);
+            setLoading(false);
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        getBooks();
       }
-    }
-    getBooks()
-    })
+    }, [searchResult,API_URL])
 
 
   return (
