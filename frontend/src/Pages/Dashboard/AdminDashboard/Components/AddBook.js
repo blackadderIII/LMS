@@ -109,6 +109,26 @@ function AddBook() {
       .catch(error => console.error(error));
     }
 
+    const handleDelete = async (bookid) =>{
+        try {
+            const deletebook = await axios.delete(API_URL+`api/books/removebook/${bookid}`)
+            if(deletebook.data==="Book has been deleted"){
+                alert("Book Has Been Deleted")
+                return
+            }
+            else{
+                alert("An error occured please refresh and try again")
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const openEditModule = async () =>{
+
+    }
+
     return (
         <div>
             <p className="dashboard-option-title">Add a Book</p>
@@ -179,6 +199,9 @@ function AddBook() {
                         <th>S.No</th>
                         <th>Book Name</th>
                         <th>Added Date</th>
+                        <th>No. of Copies</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     {
                         recentAddedBooks.map((book, index) => {
@@ -187,6 +210,9 @@ function AddBook() {
                                     <td>{index + 1}</td>
                                     <td>{book.bookName}</td>
                                     <td>{book.createdAt.substring(0, 10)}</td>
+                                    <td>{book.bookCountAvailable}</td>
+                                    <td>{<button class="editbtn"  onClick={()=>openEditModule(`${book._id}`)}>Edit</button>}</td>
+                                    <td>{<button class="deletebtn"  onClick={()=>handleDelete(`${book._id}`)}>Delete</button>}</td>
                                 </tr>
                             )
                         })
@@ -198,3 +224,4 @@ function AddBook() {
 }
 
 export default AddBook
+
