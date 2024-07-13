@@ -74,6 +74,28 @@ router.get("/getbook/:id", async (req, res) => {
     }
 })
 
+router.get("/search", async (req, res) => {
+  const { query } = req.query;
+  const books = await Book.find({
+    $or: [
+      { bookName: { $regex: query, $options: 'i' } },
+      { alternateTitle: { $regex: query, $options: 'i' } },
+      { author: { $regex: query, $options: 'i' } },
+      { publisher: { $regex: query, $options: 'i' } },
+      { bookStatus: { $regex: query, $options: 'i' } },
+      {
+        categories: {
+          $elemMatch: {
+            $ref: "bookcategories",
+            $id: { $regex: query, $options: 'i' },
+          },
+        },
+      },
+    ],
+  });
+  res.json(books);
+});
+
 /* Get books by category name*/
 router.get("/", async (req, res) => {
     const category = req.query.category
@@ -161,7 +183,6 @@ router.put("/updatebook/:id", async (req, res) => {
 
 /* Remove book  */
 router.delete("/removebook/:id", async (req, res) => {
-    if (req.body.isAdmin) {
         try {
             const _id = req.params.id
             const book = await Book.findOne({ _id })
@@ -171,9 +192,6 @@ router.delete("/removebook/:id", async (req, res) => {
         } catch (err) {
             return res.status(504).json(err);
         }
-    } else {
-        return res.status(403).json("You dont have permission to delete a book!");
-    }
 })
 
 export default router
