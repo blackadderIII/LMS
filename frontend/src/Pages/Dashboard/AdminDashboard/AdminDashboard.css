@@ -277,6 +277,11 @@
   max-width: 400px;
 }
 
+.category-dropdown{
+  width: 100%;
+  max-width: 400px;
+  margin-left: 4%;
+}
 @media screen and (max-width: 768px) {
   .semanticdropdown {
     max-width: 280px;
