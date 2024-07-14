@@ -75,38 +75,6 @@ router.get("/getbook/:id", async (req, res) => {
 })
 
 // search function
-// router.get("/search", async (req, res) => {
-//   const { query } = req.query;
-//   const books = await Book.aggregate([
-//     {
-//       $lookup: {
-//         from: "BookCategory",
-//         localField: "categories",
-//         foreignField: "_id",
-//         as: "categories"
-//       }
-//     },
-//     {
-//       $match: {
-//         $or: [
-//           { bookName: { $regex: query, $options: 'i' } },
-//           { alternateTitle: { $regex: query, $options: 'i' } },
-//           { author: { $regex: query, $options: 'i' } },
-//           { publisher: { $regex: query, $options: 'i' } },
-//           { bookStatus: { $regex: query, $options: 'i' } },
-//           { language: { $regex: query, $options: 'i' } },
-//           {
-//             categories: {
-//               $elemMatch: { categoryName: { $regex: query, $options: 'i' } }
-//             }
-//           }
-//         ]
-//       }
-//     }
-//   ]);
-//   res.json(books);
-// });
-
 router.get("/search", async (req, res) => {
   const { query } = req.query;
   let categoryId;
