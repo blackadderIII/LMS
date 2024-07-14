@@ -74,27 +74,71 @@ router.get("/getbook/:id", async (req, res) => {
     }
 })
 
+// search function
+// router.get("/search", async (req, res) => {
+//   const { query } = req.query;
+//   const books = await Book.aggregate([
+//     {
+//       $lookup: {
+//         from: "BookCategory",
+//         localField: "categories",
+//         foreignField: "_id",
+//         as: "categories"
+//       }
+//     },
+//     {
+//       $match: {
+//         $or: [
+//           { bookName: { $regex: query, $options: 'i' } },
+//           { alternateTitle: { $regex: query, $options: 'i' } },
+//           { author: { $regex: query, $options: 'i' } },
+//           { publisher: { $regex: query, $options: 'i' } },
+//           { bookStatus: { $regex: query, $options: 'i' } },
+//           { language: { $regex: query, $options: 'i' } },
+//           {
+//             categories: {
+//               $elemMatch: { categoryName: { $regex: query, $options: 'i' } }
+//             }
+//           }
+//         ]
+//       }
+//     }
+//   ]);
+//   res.json(books);
+// });
+
 router.get("/search", async (req, res) => {
   const { query } = req.query;
-  const books = await Book.find({
-    $or: [
-      { bookName: { $regex: query, $options: 'i' } },
-      { alternateTitle: { $regex: query, $options: 'i' } },
-      { author: { $regex: query, $options: 'i' } },
-      { publisher: { $regex: query, $options: 'i' } },
-      { bookStatus: { $regex: query, $options: 'i' } },
-      {
-        categories: {
-          $elemMatch: {
-            $ref: "bookcategories",
-            $id: { $regex: query, $options: 'i' },
-          },
-        },
-      },
-    ],
-  });
+  let categoryId;
+
+  // Check if the query matches a category name
+  const category = await BookCategory.find({ categoryName: query });
+  
+  if (category.length > 0) {
+    categoryId = category[0]._id;
+  }
+
+  const books = await Book.aggregate([
+    {
+      $match: {
+        $or: [
+          { bookName: { $regex: query, $options: 'i' } },
+          { alternateTitle: { $regex: query, $options: 'i' } },
+          { author: { $regex: query, $options: 'i' } },
+          { publisher: { $regex: query, $options: 'i' } },
+          { bookStatus: { $regex: query, $options: 'i' } },
+          { language: { $regex: query, $options: 'i' } },
+          { categoryNames: { $regex: query, $options: 'i' } },
+          { categories: { $in: [categoryId] } }
+        ]
+      }
+    }
+  ]);
+
   res.json(books);
 });
+
+
 
 /* Get books by category name*/
 router.get("/", async (req, res) => {
@@ -115,10 +159,9 @@ router.post('/addbook', upload.single('bookCoverImage'), async (req, res) => {
       }         
         let categories = [];
         if (req.body.categories) {
-            categories = JSON.parse(req.body.categories);
-            categories = categories.filter(category => mongoose.Types.ObjectId.isValid(category));
-            categories = categories.map(category => mongoose.Types.ObjectId(category));
-          }
+          categories = JSON.parse(req.body.categories);
+          categories = categories.map(category => mongoose.Types.ObjectId(category));
+        }
           if (req.file) {
             try {
               const fileBuffer = fs.readFileSync(req.file.path);
