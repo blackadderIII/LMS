@@ -17,7 +17,7 @@ function AddBook() {
   const [bookCoverImage, setBookCoverImage] = useState(null);
   const [publisher, setPublisher] = useState("");
   const [allCategories, setAllCategories] = useState([]);
-  const [newCategory, setNewCategory] = useState([]);
+  const [newCategory, setNewCategory] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [recentAddedBooks, setRecentAddedBooks] = useState([]);
 
@@ -99,13 +99,11 @@ function AddBook() {
     getallBooks();
   }, [API_URL]);
 
-  const handleCategory = (e) => {
-    e.stopPropagation();
-  e.preventDefault();
-    axios.post(API_URL + "api/categories/addcategory", {
+  const handleCategory = async () => {
+  console.log('hey')
+    await axios.post(API_URL + 'api/categories/addcategory', {
         categoryName: newCategory,
-      })
-      .then((response) => {
+      }).then((response) => {
         setAllCategories([
           ...allCategories,
           { value: response.data._id, text: response.data.categoryName },
@@ -139,7 +137,21 @@ function AddBook() {
     <div>
       <p className="dashboard-option-title">Add a Book</p>
       <div className="dashboard-title-line"></div>
-
+        <div className="category-dropdown">
+        <input
+          type="text"
+          placeholder="Type in a new category"
+          value={newCategory}
+          onChange={(e) => setNewCategory(e.target.value)}
+        />
+        <button type="button"
+          onClick={() => {
+            handleCategory();
+          }}
+        >
+          Add Category
+        </button>
+        </div>
       <form className="addbook-form" onSubmit={addBook}>
         <label className="addbook-form-label" htmlFor="bookName">
           Book Name<span className="required-field">*</span>
@@ -256,7 +268,7 @@ function AddBook() {
           Categories<span className="required-field">*</span>
         </label>
         <br />
-        <div className="category-dropdown">
+        <div className="semanticdropdown">
         <Dropdown
           placeholder="Category"
           fluid
@@ -267,19 +279,6 @@ function AddBook() {
           value={selectedCategories}
           onChange={(event, value) => setSelectedCategories(value.value)}
         />
-        <input
-          type="text"
-          placeholder="Type in a new category"
-          value={newCategory}
-          onChange={(e) => setNewCategory(e.target.value)}
-        />
-        <button type="button"
-          onClick={() => {
-            handleCategory();
-          }}
-        >
-          Add Category
-        </button>
       </div>
 
         <button className="addbook-submit" onClick={(e) => addBook(e)}>
