@@ -32,6 +32,7 @@ function AddTransaction() {
     ]
 
     const [transactionType, setTransactionType] = useState("")
+    const [bookDetails,setBookDetails] = useState([])
 
     /* Adding a Transaction */
     const addTransaction = async (e) => {
@@ -156,6 +157,19 @@ function AddTransaction() {
         getallBooks()
     }, [API_URL])
 
+    // Fetch Selected Book Details
+    useEffect(() => {
+        const getBookDetails = async () => {
+          try {
+            const response = await axios.get(API_URL + "api/books/getbook/" + bookId);
+            setBookDetails(response.data);
+          } catch (err) {
+            console.log(err);
+          }
+        };
+        getBookDetails();
+      }, [bookId]);
+
 
     return (
         <div>
@@ -233,8 +247,14 @@ function AddTransaction() {
                 </div>
                 <table className="admindashboard-table shortinfo-table" style={bookId === "" ? { display: "none" } : {}}>
                     <tr>
-                        <th>Available Coipes</th>
+                        <th>Available Copies</th>
                         <th>Reserved</th>
+                        <th>Issued</th>
+                    </tr>
+                    <tr>
+                    <td>{bookDetails.bookCountAvailable - bookDetails.bookReservedCopies - bookDetails.bookIssuedCopies}</td>
+                    <td>{bookDetails.bookReservedCopies}</td>
+                    <td>{bookDetails.bookIssuedCopies}</td>
                     </tr>
                 </table>
 
@@ -270,8 +290,9 @@ function AddTransaction() {
                     minDate={new Date()}
                     dateFormat="MM/dd/yyyy"
                 />
-
-                <input className="transaction-form-submit" type="submit" value="SUBMIT" disabled={isLoading}></input>
+                <button className="transaction-form-submit" onClick={(e) => addTransaction(e)}>
+          {isLoading ? <div className="loading-mini"></div> : "SUBMIT"}
+        </button>
             </form>
             <p className="dashboard-option-title">Recent Transactions</p>
             <div className="dashboard-title-line"></div>
