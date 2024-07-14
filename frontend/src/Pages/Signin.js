@@ -10,26 +10,30 @@ function Signin() {
     const [employeeId,setEmployeeId] = useState()
     const [password, setPassword] = useState()
     const [error, setError] = useState("")
+    const [loading,setLoading]= useState(false);
     const { dispatch } = useContext(AuthContext)
 
     const API_URL = process.env.REACT_APP_API_URL
     
     const loginCall = async (userCredential, dispatch) => {
         dispatch({ type: "LOGIN_START" });
+        setLoading(true)
         try {
             const res = await axios.post(API_URL+"api/auth/signin", userCredential);
             dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
+            setLoading(false)
         }
         catch (err) {
             dispatch({ type: "LOGIN_FAILURE", payload: err })
             setError("Wrong Password Or User ID")
+            setLoading(false)
         }
     }
 
     const handleForm = (e) => {
         e.preventDefault()
         isStudent
-        ? loginCall({ admissionId, password }, dispatch)
+        ? loginCall({ admissionId, password }, dispatch) 
         : loginCall({ employeeId,password }, dispatch)
     }
 
@@ -53,7 +57,7 @@ function Signin() {
                         <label htmlFor="password"><b>Password</b></label>
                         <input className='signin-textbox' type="password" minLength='6' placeholder="Enter Password" name="psw" required onChange={(e) => { setPassword(e.target.value) }} />
                         </div>
-                    <button className="signin-button">Log In</button>
+                    <button className="signin-button">{loading?(<div className="loading-mini"></div>):"Log In"}</button>
                     <a className="forget-pass" href="#home">Forgot password?</a>
                     <p className="signup-question">Don't have an account? Contact Librarian</p>
                 </form>
