@@ -7,7 +7,8 @@ const BookCategorySchema = new mongoose.Schema({
     },
     books:[{
             type:mongoose.Types.ObjectId,
-            ref:"Book"
+            ref:"Book",
+            default:null
         }]
 },
 {
