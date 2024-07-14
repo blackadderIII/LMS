@@ -29,6 +29,14 @@ const BookSchema = new mongoose.Schema({
         type:Number,
         require:true
     },
+    bookReservedCopies:{
+        type:Number,
+        default:0
+    },
+    bookIssuedCopies:{
+        type:Number,
+        default:0
+    },
     bookStatus:{
         type:String,
         default:"Available"
