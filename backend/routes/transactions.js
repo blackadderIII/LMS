@@ -17,8 +17,18 @@ router.post("/add-transaction", async (req, res) => {
                 toDate: req.body.toDate
             })
             const transaction = await newtransaction.save()
-            const book = Book.findById(req.body.bookId)
-            await book.updateOne({ $push: { transactions: transaction._id } })
+            // Update bookReservedCopies field in Book model
+            const book = await Book.findById(req.body.bookId);
+            if (req.body.transactionType === "Reserved") {
+            book.bookReservedCopies += 1;
+            }
+            if (req.body.transactionType === "Issued") {
+            book.bookReservedCopies -= 1;    
+            book.bookIssuedCopies += 1;
+            }
+            await book.save();
+            const updatedBook = Book.findById(req.body.bookId)
+            await updatedBook.updateOne({ $push: { transactions: transaction._id } })
             res.status(200).json(transaction)
         }
         else if (req.body.isAdmin === false) {
