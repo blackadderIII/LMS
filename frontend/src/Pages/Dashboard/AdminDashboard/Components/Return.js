@@ -64,7 +64,7 @@ function Return() {
                 returnDate:moment(new Date()).format("MM/DD/YYYY")
             })
 
-            /* Getting borrower points alreadt existed */
+            /* Getting borrower points already existed */
             const borrowerdata = await axios.get(API_URL+"api/users/getuser/"+borrowerId)
             const points = borrowerdata.data.points
 
