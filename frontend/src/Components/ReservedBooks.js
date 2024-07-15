@@ -10,7 +10,7 @@ function ReservedBooks() {
     useEffect(() => {
         const getTransactions = async () => {
             try {
-                const response = await axios.get(API_URL + "api/transactions/all-transactions")
+                const response = await axios.get(API_URL + "api/transactions/reserved-transactions")
                 setRecentTransactions(response.data.slice(0, 5))
             }
             catch (err) {
@@ -28,7 +28,8 @@ function ReservedBooks() {
                 <tr>
                     <th>Name</th>
                     <th>Book</th>
-                    <th>Date</th>
+                    <th>Issued On</th>
+                    <th>Expected Return Date</th>
                 </tr>
                 {
                     recentTransactions.map((transaction, index) => {
@@ -37,6 +38,7 @@ function ReservedBooks() {
                                 <td>{transaction.borrowerName}</td>
                                 <td>{transaction.bookName}</td>
                                 <td>{transaction.updatedAt.slice(0, 10)}</td>
+                                <td>{transaction.toDate}</td>
                             </tr>
                         )
                     })
