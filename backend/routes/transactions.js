@@ -23,7 +23,6 @@ router.post("/add-transaction", async (req, res) => {
             book.bookReservedCopies += 1;
             }
             if (req.body.transactionType === "Issued") {
-            book.bookReservedCopies -= 1;    
             book.bookIssuedCopies += 1;
             }
             await book.save();
@@ -50,9 +49,19 @@ router.get("/all-transactions", async (req, res) => {
     }
 })
 
+router.get("/reserved-transactions", async (req, res) => {
+    try {
+        const transactions = await BookTransaction.find({ transactionStatus: "Active" }).sort({ createdAt: -1 }).limit(10);
+        res.status(200).json(transactions)
+    }
+    catch (err) {
+        return res.status(504).json(err)
+    }
+})
+
 router.get("/countTransactions", async (req, res) => {
     try {
-        const transactionsCount = await BookTransaction.countDocuments();
+        const transactionsCount = await BookTransaction.countDocuments({ transactionStatus: "Active" });
         // counts number of transactions
         res.status(200).json(transactionsCount)
     }
@@ -64,9 +73,18 @@ router.get("/countTransactions", async (req, res) => {
 router.put("/update-transaction/:id", async (req, res) => {
     try {
         if (req.body.isAdmin) {
-            await BookTransaction.findByIdAndUpdate(req.params.id, {
+            const transaction = await BookTransaction.findByIdAndUpdate(req.params.id, {
                 $set: req.body,
             });
+
+            if (transaction.transactionType === "Reserved" && req.body.transactionType === "Issued") {
+                // Update the book's reserved and issued copies
+                const book = await Book.findById(transaction.bookId);
+                console.log(book)
+                book.bookReservedCopies -= 1;
+                book.bookIssuedCopies += 1;
+                await book.save();
+              }
             res.status(200).json("Transaction details updated successfully");
         }
     }
@@ -76,19 +94,22 @@ router.put("/update-transaction/:id", async (req, res) => {
 })
 
 router.delete("/remove-transaction/:id", async (req, res) => {
-    if (req.body.isAdmin) {
-        try {
-            const data = await BookTransaction.findByIdAndDelete(req.params.id);
-            const book = Book.findById(data.bookId)
-            console.log(book)
-            await book.updateOne({ $pull: { transactions: req.params.id } })
-            res.status(200).json("Transaction deleted successfully");
-        } catch (err) {
-            return res.status(504).json(err);
+    try {
+        const data = await BookTransaction.findByIdAndDelete(req.params.id);
+        const book = await Book.findById(data.bookId);
+        await book.updateOne({ $pull: { transactions: req.params.id } });
+    
+        if (data.transactionType === "Reserved") {
+          book.bookReservedCopies -= 1;
+        } else if (data.transactionType === "Issued") {
+          book.bookIssuedCopies -= 1;
         }
-    } else {
-        return res.status(403).json("You dont have permission to delete a book!");
-    }
-})
+        await book.save();
+    
+        res.status(200).json("Transaction deleted successfully");
+      } catch (err) {
+        return res.status(504).json(err);
+      }
+    })
 
 export default router
