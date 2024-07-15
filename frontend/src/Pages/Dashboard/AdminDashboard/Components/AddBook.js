@@ -100,7 +100,7 @@ function AddBook() {
   }, [API_URL]);
 
   const handleCategory = async () => {
-  console.log('hey')
+
     await axios.post(API_URL + 'api/categories/addcategory', {
         categoryName: newCategory,
       }).then((response) => {
