@@ -20,6 +20,8 @@ function AddBook() {
   const [newCategory, setNewCategory] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [recentAddedBooks, setRecentAddedBooks] = useState([]);
+  const [showEditBook,setShowEditBook] = useState(false)
+  const [bookInfo,setBookInfo] = useState([])
 
   /* Fetch all the Categories */
   useEffect(() => {
@@ -131,11 +133,66 @@ function AddBook() {
     }
   };
 
-  const openEditModule = async () => {};
+  const openEditModule = async (bookid) => {
+    setShowEditBook(true)
 
+    const getBookInfo = await axios.get(API_URL+`api/books/getbook/${bookid}`)
+    setBookInfo(getBookInfo.data)
+    return
+  };
+  
+
+  const editBook = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append("bookName", bookName);
+    formData.append("alternateTitle", alternateTitle);
+    formData.append("author", author);
+    formData.append("bookCountAvailable", bookCountAvailable);
+    formData.append("language", language);
+    formData.append("publisher", publisher);
+    formData.append("categories", JSON.stringify(selectedCategories));
+    formData.append("isAdmin", user.isAdmin);
+  
+    if (bookCoverImage) {
+      formData.append("bookCoverImage", bookCoverImage);
+    }
+  
+    try {
+      const response = await axios.put(
+        API_URL + `api/books/updatebook/${bookInfo._id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if(response.date === "Book details updated successfully"){
+        alert("Book details updated successfully");
+        setShowEditBook(false);
+        setIsLoading(false);
+      }
+      else {
+        alert("Book details update failed");
+        setShowEditBook(false);
+        setIsLoading(false);
+      }
+      
+    } catch (error){
+    console.log(error);
+    setIsLoading(false);
+  }
+};
+  
+  const closeEdit = ()=>{
+    setShowEditBook(false);
+  }
+  
   return (
     <div>
-      <p className="dashboard-option-title">Add a Book</p>
+      <p className="dashboard-option-title">{showEditBook ? 'Edit Book Information' : 'Add a Book'}</p>
       <div className="dashboard-title-line"></div>
         <div className="category-dropdown">
         <input
@@ -152,6 +209,8 @@ function AddBook() {
           Add Category
         </button>
         </div>
+        {/* Form for New Book Entry */}
+        {!showEditBook && (
       <form className="addbook-form" onSubmit={addBook}>
         <label className="addbook-form-label" htmlFor="bookName">
           Book Name<span className="required-field">*</span>
@@ -285,6 +344,146 @@ function AddBook() {
           {isLoading ? <div className="loading-mini"></div> : "SUBMIT"}
         </button>
       </form>
+    )}
+        {/* Form for existing book editing */}
+        {showEditBook && (
+          <form className="editbook-form" onSubmit={editBook}>
+          <button onClick={()=>{closeEdit()}}>Close Edit</button>
+          <br/>
+            <label className="addbook-form-label" htmlFor="bookName">
+              Book Name<span className="required-field">*</span>
+            </label>
+            <br />
+            <input
+              className="addbook-form-input"
+              type="text"
+              name="bookName"
+              value={bookInfo.bookName}
+              onChange={(e) => {
+                setBookInfo({...bookInfo, bookName: e.target.value });
+              }}
+              required
+            ></input>
+            <br />
+
+            <label className="addbook-form-label" htmlFor="alternateTitle">
+              AlternateTitle
+            </label>
+            <br />
+            <input
+              className="addbook-form-input"
+              type="text"
+              name="alternateTitle"
+              value={bookInfo.alternateTitle}
+              onChange={(e) => {
+                setBookInfo({...bookInfo, alternateTitle: e.target.value });
+              }}
+            ></input>
+            <br />
+
+            <label className="addbook-form-label" htmlFor="author">
+              Author Name<span className="required-field">*</span>
+            </label>
+            <br />
+            <input
+              className="addbook-form-input"
+              type="text"
+              name="author"
+              value={bookInfo.author}
+              onChange={(e) => {
+                setBookInfo({...bookInfo, author: e.target.value });
+              }}
+              required
+            ></input>
+            <br />
+
+            <label className="addbook-form-label" htmlFor="language">
+              Language
+            </label>
+            <br />
+            <input
+              className="addbook-form-input"
+              type="text"
+              name="language"
+              value={bookInfo.language}
+              onChange={(e) => {
+                setBookInfo({...bookInfo, language: e.target.value });
+              }}
+            ></input>
+            <br />
+            <label className="addbook-form-label" htmlFor="bookCoverImage">
+              Book Cover Image
+            </label>
+            <br />
+            <input
+              type="file"
+              name="bookCoverImage"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                const fileSizeInMB = file.size / (1024 * 1024);
+                if (fileSizeInMB > 3) {
+                  alert("File size exceeds 2MB");
+                  setBookCoverImage(null);
+                } else {
+                  setBookCoverImage(file);
+                }
+              }}
+            />
+            <br />
+            <label className="addbook-form-label" htmlFor="publisher">
+              Publisher
+            </label>
+            <br />
+            <input
+              className="addbook-form-input"
+              type="text"
+              name="publisher"
+              value={bookInfo.publisher}
+              onChange={(e) => {
+                setBookInfo({...bookInfo, publisher: e.target.value });
+              }}
+            ></input>
+            <br />
+
+            <label className="addbook-form-label" htmlFor="copies">
+              No.of Copies Available<span className="required-field">*</span>
+            </label>
+            <br />
+            <input
+              className="addbook-form-input"
+              type="text"
+              name="copies"
+              value={bookInfo.bookCountAvailable}
+              onChange={(e) => {
+                setBookInfo({...bookInfo, bookCountAvailable: e.target.value });
+              }}
+              required
+            ></input>
+            <br />
+
+            <label className="addbook-form-label" htmlFor="categories">
+              Categories<span className="required-field">*</span>
+            </label>
+            <br />
+            <div className="semanticdropdown">
+              <Dropdown
+                placeholder="Category"
+                fluid
+                multiple
+                search
+                selection
+                options={allCategories}
+                value={bookInfo.categories}
+                onChange={(event, value) => setBookInfo({...bookInfo, categories: value.value })}
+              />
+            </div>
+
+            <button className="addbook-submit" onClick={(e) => editBook(e)}>
+              {isLoading? <div className="loading-mini"></div> : "SUBMIT"}
+            </button>
+          </form>
+        )}
+
       <div>
         <p className="dashboard-option-title">Recently Added Books</p>
         <div className="dashboard-title-line"></div>
