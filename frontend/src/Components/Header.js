@@ -83,7 +83,7 @@ function Header() {
             }}
           >
             <Link to="/signin">
-              <a href="signin">SignIn</a>
+              <a href="signin">Sign In</a>
             </Link>
           </li>
         </ul>
