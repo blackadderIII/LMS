@@ -55,7 +55,7 @@ function Allbooks() {
                 <p className="bookcard-author">{book.author}</p>
                 <div className="bookcard-category">
                   <p>{book.language}</p>
-                  <span>Available Copies : {book.bookCountAvailable}</span>
+                  <span>Available Copies : {book.bookCountAvailable - book.bookReservedCopies -book.bookIssuedCopies}</span>
                 </div>
                 <div className="bookcard-emptybox"></div>
               </div>
