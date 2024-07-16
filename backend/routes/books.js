@@ -27,7 +27,7 @@ const upload = multer({
   
   upload.error = (err, req, res, next) => {
     if (err.code === 'LIMIT_FILE_SIZE') {
-      return res.status(413).json({ message: 'File too large, File should be below 5 MB' });
+      return res.status(413).json({ message: 'File too large, File should be below 2 MB' });
     } else {
       next(err);
     }
@@ -134,6 +134,7 @@ router.post('/addbook', upload.single('bookCoverImage'), async (req, res) => {
             try {
               const fileBuffer = fs.readFileSync(req.file.path);
               const bookCoverImage = fileBuffer.toString('base64');
+              const bookCoverImageName = req.file.originalname;
 
               const newbook = await new Book({
                 bookName: req.body.bookName,
@@ -142,6 +143,7 @@ router.post('/addbook', upload.single('bookCoverImage'), async (req, res) => {
                 bookCountAvailable: req.body.bookCountAvailable,
                 language: req.body.language,
                 bookCoverImage,
+                bookCoverImageName,
                 publisher: req.body.publisher,
                 bookStatus: req.body.bookStatus,
                 categories,
@@ -175,22 +177,38 @@ router.post('/addbook', upload.single('bookCoverImage'), async (req, res) => {
 )
 
 /* update book */
-router.put("/updatebook/:id", async (req, res) => {
-    if (req.body.isAdmin) {
-        try {
-            await Book.findByIdAndUpdate(req.params.id, {
-                $set: req.body,
-            });
-            res.status(200).json("Book details updated successfully");
-        }
-        catch (err) {
-            res.status(504).json(err);
-        }
+router.put("/updatebook/:id", upload.single('bookCoverImage'), async (req, res) => {
+  try {
+    const data = JSON.parse(req.body.data);
+    let bookCoverImage = null;
+    let bookCoverImageName = null;
+    if (req.file) {
+      const fileBuffer = fs.readFileSync(req.file.path);
+      bookCoverImage = fileBuffer.toString('base64');
+      bookCoverImageName = req.file.originalname;
     }
-    else {
-        return res.status(403).json("You dont have permission to add a book!");
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      return res.status(404).json("Book not found");
     }
-})
+    book.bookName = data.bookName;
+    book.alternateTitle = data.alternateTitle;
+    book.author = data.author;
+    book.bookCountAvailable = data.bookCountAvailable;
+    book.language = data.language;
+    book.publisher = data.publisher;
+    book.categories = JSON.parse(data.categories);
+    book.isAdmin = data.isAdmin;
+    if (req.file) {
+      book.bookCoverImage = bookCoverImage;
+      book.bookCoverImageName = bookCoverImageName;
+    }
+    await book.save();
+    res.status(200).json("Book details updated successfully");
+  } catch (err) {
+    res.status(504).json(err);
+  }
+});
 
 /* Remove book  */
 router.delete("/removebook/:id", async (req, res) => {
