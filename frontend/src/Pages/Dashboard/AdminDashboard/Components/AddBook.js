@@ -101,6 +101,8 @@ function AddBook() {
     getallBooks();
   }, [API_URL]);
 
+  
+  // Add Category 
   const handleCategory = async () => {
 
     await axios.post(API_URL + 'api/categories/addcategory', {
@@ -116,6 +118,7 @@ function AddBook() {
       .catch((error) => console.error(error));
   };
 
+  // Delete Book Function
   const handleDelete = async (bookid) => {
     try {
       const deletebook = await axios.delete(
@@ -133,6 +136,7 @@ function AddBook() {
     }
   };
 
+  // Edit Book Functions
   const openEditModule = async (bookid) => {
     setShowEditBook(true)
 
@@ -145,16 +149,20 @@ function AddBook() {
   const editBook = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    const formData = new FormData();
-    formData.append("bookName", bookName);
-    formData.append("alternateTitle", alternateTitle);
-    formData.append("author", author);
-    formData.append("bookCountAvailable", bookCountAvailable);
-    formData.append("language", language);
-    formData.append("publisher", publisher);
-    formData.append("categories", JSON.stringify(selectedCategories));
-    formData.append("isAdmin", user.isAdmin);
   
+    const data = {
+      bookName: bookInfo.bookName,
+      alternateTitle: bookInfo.alternateTitle,
+      author: bookInfo.author,
+      bookCountAvailable: bookInfo.bookCountAvailable,
+      language: bookInfo.language,
+      publisher: bookInfo.publisher,
+      categories: JSON.stringify(bookInfo.categories),
+      isAdmin: user.isAdmin,
+    };
+  
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(data));
     if (bookCoverImage) {
       formData.append("bookCoverImage", bookCoverImage);
     }
@@ -169,22 +177,21 @@ function AddBook() {
           },
         }
       );
-      if(response.date === "Book details updated successfully"){
+      if (response.data === "Book details updated successfully") {
+        setBookInfo([]);
         alert("Book details updated successfully");
         setShowEditBook(false);
         setIsLoading(false);
-      }
-      else {
+      } else {
         alert("Book details update failed");
         setShowEditBook(false);
         setIsLoading(false);
       }
-      
-    } catch (error){
-    console.log(error);
-    setIsLoading(false);
-  }
-};
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
   
   const closeEdit = ()=>{
     setShowEditBook(false);
@@ -209,6 +216,7 @@ function AddBook() {
           Add Category
         </button>
         </div>
+
         {/* Form for New Book Entry */}
         {!showEditBook && (
       <form className="addbook-form" onSubmit={addBook}>
@@ -415,20 +423,40 @@ function AddBook() {
               Book Cover Image
             </label>
             <br />
-            <input
-              type="file"
-              name="bookCoverImage"
-              onChange={(e) => {
+            {bookInfo.bookCoverImageName? (
+    <div>
+        <input
+            type="file"
+            name="bookCoverImage"
+            onChange={(e) => {
                 const file = e.target.files[0];
                 const fileSizeInMB = file.size / (1024 * 1024);
                 if (fileSizeInMB > 3) {
-                  alert("File size exceeds 2MB");
-                  setBookCoverImage(null);
+                    alert("File size exceeds 2MB");
+                    setBookCoverImage(null);
                 } else {
-                  setBookCoverImage(file);
+                    setBookCoverImage(file);
                 }
-              }}
-            />
+            }}
+        />
+        <span>Current image: {bookInfo.bookCoverImageName}</span>
+    </div>
+) : (
+    <input
+        type="file"
+        name="bookCoverImage"
+        onChange={(e) => {
+            const file = e.target.files[0];
+            const fileSizeInMB = file.size / (1024 * 1024);
+            if (fileSizeInMB > 3) {
+                alert("File size exceeds 2MB");
+                setBookCoverImage(null);
+            } else {
+                setBookCoverImage(file);
+            }
+        }}
+    />
+)}
             <br />
             <label className="addbook-form-label" htmlFor="publisher">
               Publisher
