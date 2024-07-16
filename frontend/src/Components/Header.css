@@ -27,7 +27,7 @@
 .search-input{
     width: 100%;
     margin-left: 15px;
-    max-width: 1800px;
+    max-width: 1500px;
     height: 40px;
     outline: none;
     padding: 10px 15px;
@@ -46,12 +46,14 @@
 }
 
 .nav-right{
+    
     display: flex;
     align-items: center;
     justify-content: center;
 }
   
 .option{
+    margin-left: -10%;
     display: flex;
     justify-content: center;
     align-items: center;
