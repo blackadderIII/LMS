@@ -19,14 +19,15 @@ function Allbooks() {
       } catch (error) {
         console.log(error);
       }
+      setLoading(false)
     };
 
     getBooks(); // call getBooks function when component mounts
-  }, [API_URL]); // empty dependency array
+  }, [API_URL]); //  dependency array
 
   useEffect(() => {
     if (!searchResult) {
-        
+
     } else {
       setBooks(searchResult);
     }
@@ -39,6 +40,12 @@ function Allbooks() {
         {loading? (
           <div className="loading"></div>
         ) : (
+          !loading ? (
+            <div className="no-books-container">
+            <img src='assets/images/empty.png' alt='No books' />
+              <h2 className="no-books">No books found</h2>
+            </div>
+          ):
           books.length === 0 ? (
             <div className="no-books-container">
             <img src='assets/images/empty.png' alt='No books' />
