@@ -47,6 +47,9 @@ router.put("/updateuser/:id", async (req, res) => {
                 return res.status(500).json(err);
             }
         }
+        if (req.body.isAdmin && req.body.userId!== req.params.id) {
+            return res.status(403).json("You cannot update the isAdmin field of another user!");
+        }
         try {
             const user = await User.findByIdAndUpdate(req.params.id, {
                 $set: req.body,
