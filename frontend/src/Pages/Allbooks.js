@@ -9,17 +9,19 @@ function Allbooks() {
   const { searchResult } = useContext(SearchContext);
   const [books,setBooks] = useState([]);
   const [loading,setLoading] = useState(true);
-
+  const [error, setError] = useState(false);
   useEffect(() => {
     const getBooks = async () => {
       try {
         const result = await axios.get(API_URL + "api/books/allbooks");
         setBooks(result.data);
-        setLoading(false);
+        setLoading(false)
       } catch (error) {
         console.log(error);
+        setError(true);
+        setLoading(false);
       }
-      setLoading(false)
+      
     };
 
     getBooks(); // call getBooks function when component mounts
@@ -40,16 +42,10 @@ function Allbooks() {
         {loading? (
           <div className="loading"></div>
         ) : (
-          !loading ? (
+          error || books.length === 0 ? (
             <div className="no-books-container">
             <img src='assets/images/empty.png' alt='No books' />
-              <h2 className="no-books">No books found</h2>
-            </div>
-          ):
-          books.length === 0 ? (
-            <div className="no-books-container">
-            <img src='assets/images/empty.png' alt='No books' />
-              <h2 className="no-books">No books found</h2>
+              <h2 className="no-books">No books found. Please again later</h2>
             </div>
           ) : (
             books.map((book)=>(
