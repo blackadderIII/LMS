@@ -71,14 +71,12 @@ function Return() {
             /* If the number of days after dueDate is greater than zero then decreasing points by 10 else increase by 10*/
             if(due > 0){
                 await axios.put(API_URL+"api/users/updateuser/"+borrowerId,{
-                    points:points-10,
-                    isAdmin: user.isAdmin
+                    points:points-10
                 })
             }
             else if(due<=0){
                 await axios.put(API_URL+"api/users/updateuser/"+borrowerId,{
-                    points:points+10,
-                    isAdmin: user.isAdmin
+                    points:points+10
                 })
             }
 
