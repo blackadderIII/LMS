@@ -85,10 +85,10 @@ function AddTransaction() {
             }
           );
 
-          await axios.put(API_URL + "api/books/updatebook/" + bookId, {
-            isAdmin: user.isAdmin,
-            bookCountAvailable: book_details.data.bookCountAvailable,
-          });
+          // await axios.put(API_URL + "api/books/updatebook/" + bookId, {
+          //   isAdmin: user.isAdmin,
+          //   bookCountAvailable: book_details.data.bookCountAvailable,
+          // });
 
           setRecentTransactions([response.data, ...recentTransactions]);
           setBorrowerId("");
