@@ -195,8 +195,13 @@ function AddTransaction() {
     getBookDetails();
   }, [bookId]);
 
-  const handleDelete = async (transactionid) => {
+  const handleDelete = async (transactionid,borrowerId) => {
     try {
+      /* Pulling out the transaction id from user active Transactions and pushing to Prev Transactions */
+      await axios.put(API_URL + `api/users/${transactionid}/move-to-prevtransactions`, {
+        userId: borrowerId,
+        isAdmin:user.isAdmin
+    })
       const deleteTransaction = await axios.delete(
         API_URL + `api/transactions/remove-transaction/${transactionid}`
       );
@@ -427,7 +432,7 @@ function AddTransaction() {
                 {
                   <button
                     class="deletebtn"
-                    onClick={() => handleDelete(`${transaction._id}`)}
+                    onClick={() => handleDelete(transaction._id,transaction.borrowerId)}
                   >
                     Delete
                   </button>
