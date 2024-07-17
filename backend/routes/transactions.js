@@ -39,6 +39,34 @@ router.post("/add-transaction", async (req, res) => {
     }
 })
 
+// reservation endpoint
+router.post("/add-reservation", async (req, res) => {
+    try {
+            const newtransaction = await new BookTransaction({
+                bookId: req.body.bookId,
+                borrowerId: req.body.borrowerId,
+                bookName: req.body.bookName,
+                borrowerName: req.body.borrowerName,
+                transactionType: req.body.transactionType,
+                fromDate: req.body.fromDate,
+                toDate: req.body.toDate
+            })
+            const transaction = await newtransaction.save()
+            // Update bookReservedCopies field in Book model
+            const book = await Book.findById(req.body.bookId);
+            if (req.body.transactionType === "Reserved") {
+            book.bookReservedCopies += 1;
+            }
+            await book.save();
+            const updatedBook = Book.findById(req.body.bookId)
+            await updatedBook.updateOne({ $push: { transactions: transaction._id } })
+            res.status(200).json(transaction)
+        }
+    catch (err) {
+        res.status(504).json(err)
+    }
+})
+
 router.get("/all-transactions", async (req, res) => {
     try {
         const transactions = await BookTransaction.find({}).sort({ _id: -1 })
@@ -51,7 +79,17 @@ router.get("/all-transactions", async (req, res) => {
 
 router.get("/reserved-transactions", async (req, res) => {
     try {
-        const transactions = await BookTransaction.find({ transactionStatus: "Active" }).sort({ createdAt: -1 }).limit(10);
+        const transactions = await BookTransaction.find({ transactionStatus: "Active" ,transactionType:"Issued"}).sort({ createdAt: -1 }).limit(10);
+        res.status(200).json(transactions)
+    }
+    catch (err) {
+        return res.status(504).json(err)
+    }
+})
+
+router.get("/get-all-reservations", async (req, res) => {
+    try {
+        const transactions = await BookTransaction.find({ transactionStatus: "Active" ,transactionType:"Reserved"}).sort({ createdAt: -1 }).limit(10);
         res.status(200).json(transactions)
     }
     catch (err) {
