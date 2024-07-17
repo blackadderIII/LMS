@@ -38,7 +38,7 @@ router.get("/countmembers", async (req, res) => {
 
 /* Update user by id */
 router.put("/updateuser/:id", async (req, res) => {
-    if (req.body.userId === req.params.id || req.body.isAdmin) {
+    if (req.body.userId === req.params.id) {
         if (req.body.password) {
             try {
                 const salt = await bcrypt.genSalt(10);

@@ -30,6 +30,7 @@ function MemberDashboard() {
           API_URL + "api/users/getuser/" + user._id
         );
         setMemberDetails(response.data);
+        console.log(response.data)
       } catch (err) {
         console.log("Error in fetching the member details");
       }

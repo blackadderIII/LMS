@@ -20,12 +20,23 @@ function Signin() {
         setLoading(true)
         try {
             const res = await axios.post(API_URL+"api/auth/signin", userCredential);
+            
+            if (res.data==="User not found"){   
+            setError("User does not Exist.")
+            setLoading(false)
+            return
+            }
+            if (res.data==="Wrong Password"){   
+            setError("Wrong User Id Or Password.")
+            setLoading(false)
+            return
+            }
             dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
             setLoading(false)
         }
         catch (err) {
             dispatch({ type: "LOGIN_FAILURE", payload: err })
-            setError("Wrong Password Or User ID")
+            setError("An error occured,Please try again later.")
             setLoading(false)
         }
     }
