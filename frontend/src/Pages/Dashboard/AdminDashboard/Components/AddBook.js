@@ -291,8 +291,8 @@ function AddBook() {
           onChange={(e) => {
             const file = e.target.files[0];
             const fileSizeInMB = file.size / (1024 * 1024);
-            if (fileSizeInMB > 3) {
-              alert("File size exceeds 2MB");
+            if (fileSizeInMB > 1.5) {
+              alert("File size exceeds 1MB");
               setBookCoverImage(null);
             } else {
               setBookCoverImage(file);
@@ -431,7 +431,7 @@ function AddBook() {
             onChange={(e) => {
                 const file = e.target.files[0];
                 const fileSizeInMB = file.size / (1024 * 1024);
-                if (fileSizeInMB > 3) {
+                if (fileSizeInMB > 1.5) {
                     alert("File size exceeds 2MB");
                     setBookCoverImage(null);
                 } else {
