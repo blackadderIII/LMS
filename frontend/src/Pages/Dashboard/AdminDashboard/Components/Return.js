@@ -44,7 +44,6 @@ function Return() {
                 setAllTransactions(response.data.sort((a, b) => Date.parse(a.toDate) - Date.parse(b.toDate)).filter((data) => {
                     return data.transactionStatus === "Active"
                 }))
-                console.log("Okay")
                 setExecutionStatus(null)
             }
             catch(err){
