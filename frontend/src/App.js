@@ -14,6 +14,7 @@ import { useContext } from "react";
 import { AuthContext } from "./Context/AuthContext.js";
 import { SearchProvider } from "./Context/searchContext.js";
 import Signup from "./Pages/Signup.js";
+import Forgotpass from "./Pages/Forgotpass.js";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -40,6 +41,9 @@ function App() {
           </Route>
           <Route exact path="/signup">
             <Signup />
+          </Route>
+          <Route exact path="/forgotpassword">
+            <Forgotpass />
           </Route>
           <Route exact path="/dashboard@member">
             {user ? (
