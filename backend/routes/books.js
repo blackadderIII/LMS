@@ -191,6 +191,9 @@ router.put("/updatebook/:id", upload.single('bookCoverImage'), async (req, res) 
     if (!book) {
       return res.status(404).json("Book not found");
     }
+    if(req.body.bookIssuedCopies){
+      book.bookIssuedCopies = req.body.bookIssuedCopies
+    }
     book.bookName = data.bookName;
     book.alternateTitle = data.alternateTitle;
     book.author = data.author;
