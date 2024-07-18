@@ -39,17 +39,17 @@ router.get("/countmembers", async (req, res) => {
 /* Update user by id */
 router.put("/updateuser/:id", async (req, res) => {
     if (req.body.userId === req.params.id) {
-        if (req.body.password) {
-            try {
-                const salt = await bcrypt.genSalt(10);
-                req.body.password = await bcrypt.hash(req.body.password, salt);
-            } catch (err) {
-                return res.status(500).json(err);
-            }
-        }
-        if (req.body.isAdmin && req.body.userId!== req.params.id) {
-            return res.status(403).json("You cannot update the isAdmin field of another user!");
-        }
+        // if (req.body.password) {
+        //     try {
+        //         const salt = await bcrypt.genSalt(10);
+        //         req.body.password = await bcrypt.hash(req.body.password, salt);
+        //     } catch (err) {
+        //         return res.status(500).json(err);
+        //     }
+        // }
+        // if (req.body.isAdmin && req.body.userId!== req.params.id) {
+        //     return res.status(403).json("You cannot update the isAdmin field of another user!");
+        // }
         try {
             const user = await User.findByIdAndUpdate(req.params.id, {
                 $set: req.body,
