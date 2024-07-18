@@ -17,10 +17,10 @@ const BookSchema = new mongoose.Schema({
         type:String,
         default:""
     },
-    bookCoverImage: {
-        type: String, 
-        default: null 
-    },
+    // bookCoverImage: {
+    //     type: String, 
+    //     default: null 
+    // },
     bookCoverImageName: {
         type: String, 
         default: null 
