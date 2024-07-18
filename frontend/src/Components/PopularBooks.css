@@ -1,5 +1,5 @@
 .popularbooks-container{
-    background-color: rgb(247,235,215);
+    background-color: white;
     display: flex;
     flex-direction: column;
 }

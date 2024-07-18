@@ -11,6 +11,7 @@ function Signin() {
     const [password, setPassword] = useState()
     const [error, setError] = useState("")
     const [loading,setLoading]= useState(false);
+    const [blurBg, setBlurBg] = useState(false);
     const { dispatch } = useContext(AuthContext)
 
     const API_URL = process.env.REACT_APP_API_URL
@@ -48,9 +49,16 @@ function Signin() {
         : loginCall({ employeeId,password }, dispatch)
     }
 
+    const handleMouseOver = () => {
+        setBlurBg(true);
+    };
+
+    const handleMouseOut = () => {
+        setBlurBg(false);
+    };
     return (
-        <div className='signin-container'>
-            <div className="signin-card">
+        <div className={`signin-container ${blurBg ? 'blur-bg' : ''}`}>
+            <div className="signin-card" onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
                 <form onSubmit={handleForm}>
                     <h2 className="signin-title"> Log in</h2>
                     <p className="line"></p>

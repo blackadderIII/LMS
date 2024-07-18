@@ -1,8 +1,8 @@
 .footer {
   display: flex;
   flex-direction: column;
-  background-color: black;
-  color: wheat;
+  background-color: rgb(255, 255, 255);
+  color: rgb(12, 12, 12);
 }
 
 .footer-data {
@@ -16,18 +16,6 @@
   margin: 15px;
 }
 
-.usefull-links {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  text-decoration: none;
-  letter-spacing: 1.5px;
-  margin: 15px;
-}
-
-.usefull-links a {
-  color: wheat;
-}
 
 .librarian-details {
   text-align: left;
@@ -39,7 +27,7 @@
 .usefull-links h1,
 .librarian-details h1 {
   font-size: 25px;
-  color: rgb(235, 88, 75);
+  color: rgb(5, 131, 16);
   padding-bottom: 15px;
   border-bottom-style: solid;
   border-bottom-width: 3.1px;
@@ -52,6 +40,7 @@
   justify-content: center;
   margin: 20px 0px;
 }
+
 
 .social-icon {
   margin: 10px;

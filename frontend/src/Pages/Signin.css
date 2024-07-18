@@ -2,12 +2,25 @@
   display: grid;
   place-items: center;
   height: 100vh;
-  background-color: wheat;
   position: relative;
 }
 
-a {
-  text-decoration: none;
+.signin-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../image2.jpg");
+  background-position: calc(200% - -200px) center;
+  background-size: cover;
+  transition: filter 0.3s; /* Add transition effect */
+  z-index: -1; /* Make sure it's behind the signin card */
+}
+
+.signin-container.blur-bg::before {
+  filter: blur(10px); /* Apply blur filter to the background */
 }
 
 .signin-card {
@@ -18,10 +31,18 @@ a {
   margin-right: auto;
   margin-top: 38px;
   margin-bottom: 38px;
-  border-radius: 10px !important;
+  border-radius: 10px!important;
   background-color: #ffff;
   box-shadow: 2px 5px 20px rgba(0, 0, 0, 0.1);
 }
+
+/* Add JavaScript code to toggle the blur-bg class on hover */
+
+a {
+  text-decoration: none;
+}
+
+
 
 form {
   padding: 30px;
