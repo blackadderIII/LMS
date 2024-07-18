@@ -4,13 +4,18 @@ import BookCategory from "../models/BookCategory.js"
 import multer from "multer";
 import mongoose from "mongoose";
 const router = express.Router()
+import path from "path";
 import * as fs from 'fs';
+
+let uploadedFileName
 
 const upload = multer({
     storage: multer.diskStorage({
       destination: '../frontend/public/assets/coverImages',
       filename: (req, file, cb) => {
-        cb(null, file.originalname);
+        const fileName = Math.floor(Math.random() * 9000000000) + 1000000000;
+        cb(null, fileName + path.extname(file.originalname))
+        uploadedFileName = fileName + path.extname(file.originalname)
       },
     }),
     fileFilter(req, file, cb) {
@@ -27,11 +32,11 @@ const upload = multer({
   
   upload.error = (err, req, res, next) => {
     if (err.code === 'LIMIT_FILE_SIZE') {
-      return res.status(413).json({ message: 'File too large, File should be below 2 MB' });
+      return res.status(413).json({ message: 'File too large, File should be below 1.5 MB' });
     } else {
       next(err);
     }
-  };// configure the upload directory
+  };
 
 
 // get total number of books
@@ -132,9 +137,7 @@ router.post('/addbook', upload.single('bookCoverImage'), async (req, res) => {
         }
           if (req.file) {
             try {
-              const fileBuffer = fs.readFileSync(req.file.path);
-              const bookCoverImage = fileBuffer.toString('base64');
-              const bookCoverImageName = req.file.originalname;
+              const bookCoverImageName = uploadedFileName;
 
               const newbook = await new Book({
                 bookName: req.body.bookName,
@@ -142,7 +145,6 @@ router.post('/addbook', upload.single('bookCoverImage'), async (req, res) => {
                 author: req.body.author,
                 bookCountAvailable: req.body.bookCountAvailable,
                 language: req.body.language,
-                bookCoverImage,
                 bookCoverImageName,
                 publisher: req.body.publisher,
                 bookStatus: req.body.bookStatus,
@@ -156,7 +158,6 @@ router.post('/addbook', upload.single('bookCoverImage'), async (req, res) => {
               return res.json({message:"Error adding book,please try again later"})
             }
           } else {
-            const bookCoverImage = null;
             
             const newbook = await new Book({
               bookName: req.body.bookName,
@@ -164,7 +165,6 @@ router.post('/addbook', upload.single('bookCoverImage'), async (req, res) => {
               author: req.body.author,
               bookCountAvailable: req.body.bookCountAvailable,
               language: req.body.language,
-              bookCoverImage,
               publisher: req.body.publisher,
               bookStatus: req.body.bookStatus,
               categories,
@@ -180,12 +180,12 @@ router.post('/addbook', upload.single('bookCoverImage'), async (req, res) => {
 router.put("/updatebook/:id", upload.single('bookCoverImage'), async (req, res) => {
   try {
     const data = JSON.parse(req.body.data);
-    let bookCoverImage = null;
+    // let bookCoverImage = null;
     let bookCoverImageName = null;
     if (req.file) {
-      const fileBuffer = fs.readFileSync(req.file.path);
-      bookCoverImage = fileBuffer.toString('base64');
-      bookCoverImageName = req.file.originalname;
+      // const fileBuffer = fs.readFileSync(req.file.path);
+      // bookCoverImage = fileBuffer.toString('base64');
+      bookCoverImageName = uploadedFileName;
     }
     const book = await Book.findById(req.params.id);
     if (!book) {
@@ -200,7 +200,7 @@ router.put("/updatebook/:id", upload.single('bookCoverImage'), async (req, res) 
     book.categories = JSON.parse(data.categories);
     book.isAdmin = data.isAdmin;
     if (req.file) {
-      book.bookCoverImage = bookCoverImage;
+      // book.bookCoverImage = bookCoverImage;
       book.bookCoverImageName = bookCoverImageName;
     }
     await book.save();
