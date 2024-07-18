@@ -1,5 +1,5 @@
 .books-page{
-    height: 100vh;
+    height: 100%;
     width: 100vw;
     background-color: wheat;
 }
@@ -7,10 +7,10 @@
 .books{
     margin: 60px auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 2fr));
     gap: 20px;
     padding: 15px;
-    max-width: 1024px;
+    max-width: 1524px;
     /* background-color: pink; */
 }
 
@@ -244,4 +244,18 @@
     .bookcard-emptybox{
          height: 35px; /* 50px * 0.7 = 35px */
      }
+
+     .bookoptions{
+        position: fixed; /* instead of absolute, use fixed to center it on the screen */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* center it horizontally and vertically */
+        height: 35vh; /* use vh instead of % to make it responsive */
+        width: 50vw; /* use vw instead of % to make it responsive */
+        border-radius: 15px;
+        background-color: white;
+        z-index: 10;
+        padding: 20px; /* add some padding to make it look nicer */
+        box-shadow: 0px 0px 10px rgba(0,0,0,0.5); /* add a shadow to make it stand out */
+      }
  }
