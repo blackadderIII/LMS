@@ -97,10 +97,6 @@ function Allbooks() {
       alert("No transaction ID found for this book");
       return;
         }
-        /* Pulling out the transaction id from user active Transactions and pushing to Prev Transactions */
-        await axios.put(API_URL + `api/users/${transactionId}/reserve-to-prevtransactions`, {
-          userId: user._id,
-      })
         const deleteTransaction = await axios.delete(
           API_URL + `api/transactions/remove-transaction/${transactionId}`
         );
@@ -158,7 +154,7 @@ function Allbooks() {
             books.map((book)=>(
               <div className="book-card" key={book._Id} onClick={()=>{handleBookOptions(book)}}>
                 <img
-                  src={book.bookCoverImageName? `assets/coverImages/${book.bookCoverImageName}` : "assets/coverImages/default.png"}
+                  src={book.bookCoverImageName ? `assets/coverImages/${book.bookCoverImageName}` : "assets/coverImages/default.png"}
                   alt=""
                 ></img>
                 <p className="bookcard-title">{book.bookName}</p>
