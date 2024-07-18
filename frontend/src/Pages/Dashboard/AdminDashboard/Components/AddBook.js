@@ -46,6 +46,7 @@ function AddBook() {
   const addBook = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    
     const formData = new FormData();
     formData.append("bookName", bookName);
     formData.append("alternateTitle", alternateTitle);
@@ -85,7 +86,7 @@ function AddBook() {
       alert("Book Added Successfully 🎉");
     } catch (error) {
       if (error.response && error.response.status === 413) {
-        alert("File size too large, File should be less than 5 MB");
+        alert("File size too large, File should be less than 1 MB");
       } else {
         console.log(error);
       }
