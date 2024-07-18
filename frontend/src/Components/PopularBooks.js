@@ -37,11 +37,7 @@ function PopularBooks() {
               <img
                 className="popular-book"
                 key={book._id}
-                src={
-                  book.bookCoverImage
-                    ? `data:image/jpeg;base64,${book.bookCoverImage}`
-                    : 'assets/coverImages/default.png'
-                }
+                src={book.bookCoverImageName? `/assets/coverImages/${book.bookCoverImageName}` : "assets/coverImages/default.png"}
                 alt=''
               />
             ))}
@@ -51,11 +47,7 @@ function PopularBooks() {
               <img
                 className="popular-book"
                 key={book._id}
-                src={
-                  book.bookCoverImage
-                    ? `data:image/jpeg;base64,${book.bookCoverImage}`
-                    : 'assets/coverImages/default.png'
-                }
+                src={book.bookCoverImageName? `/assets/coverImages/${book.bookCoverImageName}` : "assets/coverImages/default.png"}
                 alt=''
               />
             ))}
