@@ -17,11 +17,12 @@ function Forgotpass() {
       
       const API_URL = process.env.REACT_APP_API_URL;
     
-      const handleSendCode = async (userEmail) => {
+      const handleSendCode = async (e,userEmail) => {
+        e.preventDefault();
         setLoading(true)
         try {
           const res = await axios.get(API_URL+`api/auth/sendCode/${userEmail}`);
-          if (res.data === 'Code sent successfully') {
+          if (res.data.message === 'Code sent successfully') {
             setLoading(false)
             alert("Code sent to your email successfully")
             setShowCodePage(true)
@@ -33,17 +34,18 @@ function Forgotpass() {
         }
       };
 
-      const handleSubmitCode = async (userCode) => {
+      const handleSubmitCode = async (e,userCode) => {
+        e.preventDefault();
         setLoading(true)
         try {
             const response = await axios.post(API_URL+'api/auth//verifyCode', { email: userEmail, code :userCode });
-            const { message } = response.data;
-            if (message === 'Code match') {
+            if (response.data.message === "Code match") {
                 setLoading(false)
                 setShowCodePage(false)
                 setShowForgotPage(true)
             } else {
                 setError("Code does not match!");
+                setLoading(false)
             }
           } catch (error) {
             console.error('Error verifying code:', error);
@@ -52,7 +54,8 @@ function Forgotpass() {
           }
       };
 
-      const handleChangePass = async (newPass, confirmPass) => {
+      const handleChangePass = async (e,newPass, confirmPass) => {
+        e.preventDefault();
         if (newPass !== confirmPass) {
           setError("New password and confirm password do not match!");
           return;
@@ -109,7 +112,7 @@ function Forgotpass() {
             <br />
           </div>
 
-          <button className="forgotPass-button" type="submit" onClick={()=>handleSendCode(userEmail)}>{loading?(<div className="loading-mini"></div>):"Send Code"}</button>
+          <button className="forgotPass-button" type="submit" onClick={(e)=>handleSendCode(e,userEmail)}>{loading?(<div className="loading-mini"></div>):"Send Code"}</button>
 
         </form>}
 
@@ -134,7 +137,7 @@ function Forgotpass() {
             <br />
           </div>
 
-          <button className="forgotPass-button" type="submit" onClick={()=>handleSubmitCode(userCode)}>{loading?(<div className="loading-mini"></div>):"SUBMIT"}</button>
+          <button className="forgotPass-button" type="submit" onClick={(e)=>handleSubmitCode(e,userCode)}>{loading?(<div className="loading-mini"></div>):"SUBMIT"}</button>
 
         </form>}
 
@@ -169,7 +172,7 @@ function Forgotpass() {
             <br />
           </div>
 
-          <button className="forgotPass-button" type="submit" onClick={()=>handleChangePass(newUserPass,newConfirmPass)}>{loading?(<div className="loading-mini"></div>):"SUBMIT"}</button>
+          <button className="forgotPass-button" type="submit" onClick={(e)=>handleChangePass(e,newUserPass,newConfirmPass)}>{loading?(<div className="loading-mini"></div>):"SUBMIT"}</button>
 
         </form>}
       </div>
