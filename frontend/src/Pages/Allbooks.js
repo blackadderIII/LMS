@@ -13,7 +13,6 @@ function Allbooks() {
   const [isloading,setisLoading] = useState(false);
   const [error, setError] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
-  const [transactionIds, setTransactionIds] = useState({});
   const {user} = useContext(AuthContext)
 
   useEffect(() => {
@@ -69,18 +68,20 @@ function Allbooks() {
         fromDate: new Date().toLocaleDateString("en-US"), // format: "MM/dd/yyyy"
         toDate: toDateStr
       };
+
       const response = await axios.post(`${API_URL}api/transactions/add-reservation`, reserveData);
       const transactionId = response.data._id;
-    setTransactionIds((prevTransactionIds) => ({...prevTransactionIds, [bookId]: transactionId }));
-    setSelectedBook({...selectedBook, bookReservedCopies: selectedBook.bookReservedCopies + 1}); // Update selectedBook state
-    // ...
+
       await axios.put(
         API_URL +
-          `api/users/${response.data._id}/reserve-to-activetransactions`,
+          `api/users/${transactionId}/reserve-to-activetransactions`,
         {
           userId: user._id
         }
       );
+    
+      setSelectedBook({...selectedBook, bookReservedCopies: selectedBook.bookReservedCopies + 1}); // Update selectedBook state
+
       setLoading(false)
       alert("Book Reserved Successfully For 7 days.")
     } catch (error) {
@@ -88,35 +89,40 @@ function Allbooks() {
       setLoading(false)
     }
   };
+
   // cancel reservation
   const cancelReserve = async (bookId) =>{
-      try {
-        setisLoading(true)
-        const transactionId = transactionIds[bookId];
-        if (!transactionId) {
-      alert("No transaction ID found for this book");
-      return;
-        }
-        const deleteTransaction = await axios.delete(
-          API_URL + `api/transactions/remove-transaction/${transactionId}`
-        );
-        setTransactionIds((prevTransactionIds) => ({...prevTransactionIds, [bookId]: null }));
-        setSelectedBook({...selectedBook, bookReservedCopies: selectedBook.bookReservedCopies - 1}); // Update selectedBook state
-        
-        if (deleteTransaction.data === "Transaction deleted successfully") {
-          alert("Transaction deleted successfully");
-          // window.location.reload();
-          setisLoading(false)
-          return;
-        } else {
-          setisLoading(false)
-          alert("An error occured please refresh and try again");
-        }
-      } catch (error) {
-        setisLoading(false)
-        console.log(error);
+    try {
+      setisLoading(true)
+      const book = await axios.get(`${API_URL}api/books/getbook/${bookId}`);
+      const transaction = book.data.transactions.find((transaction) => {
+        return transaction.bookId === bookId && transaction.borrowerId === user._id && transaction.transactionType === "Reserved" && transaction.transactionStatus==="Active";
+      });
+      if (!transaction) {
+        alert("No transaction ID found for this book");
+        return;
       }
-    };
+      const transactionId = transaction._id;
+      const deleteTransaction = await axios.delete(
+        API_URL + `api/transactions/remove-transaction/${transactionId}`
+      );
+      
+      setSelectedBook({...selectedBook, bookReservedCopies: selectedBook.bookReservedCopies - 1}); // Update selectedBook state
+      
+      if (deleteTransaction.data === "Transaction deleted successfully") {
+        alert("Transaction deleted successfully");
+        // window.location.reload();
+        setisLoading(false)
+        return;
+      } else {
+        setisLoading(false)
+        alert("An error occured please refresh and try again");
+      }
+    } catch (error) {
+      setisLoading(false)
+      console.log(error);
+    }
+  };
 
   // Function to automatically check reservations and delete if reservations exceed 7 days
   useEffect(() => {

@@ -180,11 +180,9 @@ router.post('/addbook', upload.single('bookCoverImage'), async (req, res) => {
 router.put("/updatebook/:id", upload.single('bookCoverImage'), async (req, res) => {
   try {
     const data = JSON.parse(req.body.data);
-    // let bookCoverImage = null;
     let bookCoverImageName = null;
     if (req.file) {
-      // const fileBuffer = fs.readFileSync(req.file.path);
-      // bookCoverImage = fileBuffer.toString('base64');
+
       bookCoverImageName = uploadedFileName;
     }
     const book = await Book.findById(req.params.id);
