@@ -27,7 +27,7 @@ function PopularBooks() {
 
   return (
     <div className="popularbooks-container">
-      <h className="popularbooks-title">Popular Books</h>
+      <h className="popularbooks-title">POPULAR BOOKS</h>
         {loading ? (
           <div className='loading-mini'></div>
         ) : popularBook.length > 0 ? (

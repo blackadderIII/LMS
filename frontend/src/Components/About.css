@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
 
 .about-box{
-    background-color: rgb(16,25,13);
+    background-color: #02592f;
 }
 
 /* Mobile View */
@@ -23,7 +23,7 @@
 /* Desktop View */
 .about-title{
     position: relative;
-    color: rgb(238,129,30);
+    color: #f8cd0f;
     text-align: center;
     font-size: 32px;
     padding: 25px;

@@ -23,7 +23,7 @@ function ReservedBooks() {
 
     return (
         <div className='reservedbooks-container'>
-            <h className='reservedbooks-title'>Books On Hold</h>
+            <h className='reservedbooks-title'>BOOKS ON HOLD</h>
             <table className='reservedbooks-table'>
                 <tr>
                     <th>Name</th>

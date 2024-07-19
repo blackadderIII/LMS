@@ -1,5 +1,5 @@
 .reservedbooks-container{
-    background-color: rgb(16,25,13);
+    background-color: #02592f;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -15,15 +15,16 @@
 }
   
 .reservedbooks-table td,.reservedbooks-table th {
-    border: 2px solid #696969;
+    border: 2px solid #02592f;
     text-align: left;
     padding: 8px;
-    background-color: #dddddd;
+    background-color: #22f790;
 }
 
 .reservedbooks-title{
     position: relative;
-    color: rgb(238,129,30);
+    color: white;
     text-align: center;
     font-size: 32px;
+    font-family: 'Times New Roman', Times, serif;
 }
