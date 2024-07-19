@@ -5,8 +5,8 @@ import nodemailer from 'nodemailer';
 
 const router = express.Router();
 
-const DevEmail = "ace19dev@gmail.com";
-const DevPass = 'qsmfajuukrpuckul'
+const DevEmail = "kobbina50@gmail.com";
+const DevPass = 'laejrjctqjbcuygp'
 
 export const transporter = nodemailer.createTransport({
     service: 'gmail',
