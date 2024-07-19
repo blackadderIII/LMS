@@ -5,8 +5,8 @@ import nodemailer from 'nodemailer';
 
 const router = express.Router();
 
-const DevEmail = "skobarnes1@gmail.com";
-const DevPass = "kobbinaodg1."
+const DevEmail = "ace19dev@gmail.com";
+const DevPass = 'qsmfajuukrpuckul'
 
 export const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -128,10 +128,10 @@ router.post('/verifyCode', async (req, res) => {
     if (!user) {
       return res.json({ message: 'User not found' });
     }
-    if (code!== user.passCode) {
+    if (code!= user.passCode) {
       return res.json({ message: 'Code does not match' });
     } else {
-      return res.json({ message: 'Code match' });
+      return res.json({ message: "Code match" });
     }
   } catch (error) {
     console.error('Error verifying code:', error);
