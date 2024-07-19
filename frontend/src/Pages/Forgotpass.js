@@ -164,7 +164,7 @@ function Forgotpass() {
             <input
             className='forgotPass-textbox'
               type="password"
-              minLength='6' placeholder="Enter New Password"
+              minLength='6' placeholder="Confirm New Password"
               name="userFullName"
               value={newConfirmPass}
               onChange={(e)=>{setnewConfirmPass(e.target.value)}}
