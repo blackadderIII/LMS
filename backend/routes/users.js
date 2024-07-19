@@ -93,19 +93,19 @@ router.put("/:id/reserve-to-activetransactions" , async (req,res)=>{
         }
 })
 
-/* Adding Reservation to previous transactions list and removing from active transactions list */
-router.put("/:id/reserve-to-prevtransactions", async (req,res)=>{
-        try{
-            const user = await User.findById(req.body.userId);
-            await user.updateOne({$pull:{activeTransactions:req.params.id}})
-            await user.updateOne({$push:{prevTransactions:req.params.id}})
-            res.status(200).json("Added to Prev transaction Transaction")
-        }
-        catch(err){
-            res.status(500).json(err)
-        }
-    }
-)
+// /* Adding Reservation to previous transactions list and removing from active transactions list */
+// router.put("/:id/reserve-to-prevtransactions", async (req,res)=>{
+//         try{
+//             const user = await User.findById(req.body.userId);
+//             await user.updateOne({$pull:{activeTransactions:req.params.id}})
+//             await user.updateOne({$push:{prevTransactions:req.params.id}})
+//             res.status(200).json("Added to Prev transaction Transaction")
+//         }
+//         catch(err){
+//             res.status(500).json(err)
+//         }
+//     }
+// )
 /* Adding transaction to previous transactions list and removing from active transactions list */
 router.put("/:id/move-to-prevtransactions", async (req,res)=>{
     if(req.body.isAdmin){
