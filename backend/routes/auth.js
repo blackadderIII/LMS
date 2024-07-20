@@ -88,7 +88,7 @@ router.get("/sendCode/:email", async (req, res) => {
       <p>Hello,</br>
           Use the code below to reset to reset your password for KNUST Library System Account
       </p>
-      <h1 style="letter-spacing: 1px; color: #1e90ff;">${generatedCode}</h1>
+      <h1 style="letter-spacing: 1px; color: rgb(0, 194, 0);">${generatedCode}</h1>
       <p style="font-size: 15px;">
           If you didn't make this request, kindly ignore this email.
       </p>
