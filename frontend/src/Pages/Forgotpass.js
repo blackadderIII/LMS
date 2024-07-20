@@ -27,6 +27,15 @@ function Forgotpass() {
             alert("Code sent to your email successfully")
             setShowCodePage(true)
           }
+          else if(res.data.message === 'Error sending mail'){
+            setError("An error occured please try again later.");
+            setLoading(false)
+          }
+          else if(res.data.message === 'Account does not exist'){
+            setError("Email is not associated with an account");
+            setLoading(false)
+          }
+          
         } catch (err) {
           setError("An error occured please try again later.");
           console.log(err);
