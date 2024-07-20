@@ -124,6 +124,8 @@ function Allbooks() {
     }
   };
 
+
+  const [intervalId, setIntervalId] = useState(null);
   // Function to automatically check reservations and delete if reservations exceed 7 days
   useEffect(() => {
     const cancelExpiredReservations = async () => {
@@ -131,7 +133,9 @@ function Allbooks() {
         const transactions = await axios.get(`${API_URL}api/transactions/get-all-reservations`);
         const expiredReservations = transactions.data.filter((transaction) => {
           const toDate = new Date(transaction.toDate);
-          return toDate < new Date();
+          const fromDate = new Date(transaction.fromDate);
+          const diffInDays = Math.abs(toDate - fromDate) / (1000 * 3600 * 24);
+          return diffInDays > 1 && transaction.borrowerId === user._id && transaction.transactionType === "Reserved" && transaction.transactionStatus === "Active";
         });
   
         expiredReservations.forEach((transaction) => {
@@ -141,8 +145,16 @@ function Allbooks() {
         console.log(error);
       }
     };
-    setInterval(cancelExpiredReservations, 3600000); // 3600000 milliseconds = 1 hour
-  }, [API_URL]);
+    // setInterval(cancelExpiredReservations, 1200000); // 1200000 milliseconds = 20 minutes
+    const id = setInterval(cancelExpiredReservations, 1200000);
+    setIntervalId(id);
+
+    // cancelExpiredReservations()
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [API_URL,user]);
 
 
   return (
