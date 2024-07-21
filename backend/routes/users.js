@@ -26,6 +26,16 @@ router.get("/allmembers", async (req,res)=>{
     }
 })
 
+router.get("/getallmembers", async (req,res)=>{
+    try{
+        const users = await User.find({}).sort({_id:-1})
+        res.status(200).json(users)
+    }
+    catch(err){
+        return res.status(500).json(err);
+    }
+})
+
 // user stats
 router.get("/countmembers", async (req, res) => {
     try {
