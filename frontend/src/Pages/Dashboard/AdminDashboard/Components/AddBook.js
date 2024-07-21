@@ -97,7 +97,7 @@ function AddBook() {
   useEffect(() => {
     const getallBooks = async () => {
       const response = await axios.get(API_URL + "api/books/allbooks");
-      setRecentAddedBooks(response.data.slice(0, 5));
+      setRecentAddedBooks(response.data);
     };
     getallBooks();
   }, [API_URL]);
@@ -514,7 +514,7 @@ function AddBook() {
         )}
 
       <div>
-        <p className="dashboard-option-title">Recently Added Books</p>
+        <p className="dashboard-option-title">All Books</p>
         <div className="dashboard-title-line"></div>
         <table className="admindashboard-table">
           <tr>
