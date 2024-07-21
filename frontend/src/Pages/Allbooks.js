@@ -11,8 +11,10 @@ function Allbooks() {
   const [books,setBooks] = useState([]);
   const [loading,setLoading] = useState(false);
   const [isloading,setisLoading] = useState(false);
+  const [loadingBook,setLoadingBook] = useState(false);
   const [error, setError] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
+  const [intervalId, setIntervalId] = useState(null);
   const {user} = useContext(AuthContext)
 
   useEffect(() => {
@@ -42,10 +44,13 @@ function Allbooks() {
   }, [searchResult]);
 
   const handleBookOptions = async (book) =>{
+    setLoadingBook(true)
     if(user && (user.userType === "Student" || user.userType === "Staff")) {
       const response = await axios.get(`${API_URL}api/books/getbook/${book._id}`);
     const updatedBook = response.data;
+    setLoadingBook(false)
     setSelectedBook(updatedBook);
+
     }
   }
   //close options code 
@@ -66,7 +71,8 @@ function Allbooks() {
         borrowerName: user.userFullName,
         transactionType: "Reserved",
         fromDate: new Date().toLocaleDateString("en-US"), // format: "MM/dd/yyyy"
-        toDate: toDateStr
+        toDate: toDateStr,
+        byAdmin:user.isAdmin
       };
 
       const response = await axios.post(`${API_URL}api/transactions/add-reservation`, reserveData);
@@ -96,10 +102,11 @@ function Allbooks() {
       setisLoading(true)
       const book = await axios.get(`${API_URL}api/books/getbook/${bookId}`);
       const transaction = book.data.transactions.find((transaction) => {
-        return transaction.bookId === bookId && transaction.borrowerId === user._id && transaction.transactionType === "Reserved" && transaction.transactionStatus==="Active";
+        return transaction.bookId === bookId && transaction.borrowerId === user._id && transaction.byAdmin === user.isAdmin && transaction.transactionType === "Reserved" && transaction.transactionStatus==="Active";
       });
       if (!transaction) {
         alert("No transaction ID found for this book");
+        setisLoading(false)
         return;
       }
       const transactionId = transaction._id;
@@ -125,18 +132,18 @@ function Allbooks() {
   };
 
 
-  const [intervalId, setIntervalId] = useState(null);
   // Function to automatically check reservations and delete if reservations exceed 7 days
   useEffect(() => {
     const cancelExpiredReservations = async () => {
       try {
         const transactions = await axios.get(`${API_URL}api/transactions/get-all-reservations`);
+        const currentDate = new Date();
         const expiredReservations = transactions.data.filter((transaction) => {
           const toDate = new Date(transaction.toDate);
           const fromDate = new Date(transaction.fromDate);
-          const diffInDays = Math.abs(toDate - fromDate) / (1000 * 3600 * 24);
-          return diffInDays > 1 && transaction.borrowerId === user._id && transaction.transactionType === "Reserved" && transaction.transactionStatus === "Active";
-        });
+          const diffInDays = Math.abs((toDate - fromDate) / (1000 * 3600 * 24));
+          return currentDate > toDate && diffInDays === 1 && transaction.borrowerId === user._id && transaction.byAdmin === user.isAdmin && transaction.transactionType === "Reserved" && transaction.transactionStatus === "Active";
+      });
   
         expiredReservations.forEach((transaction) => {
           cancelReserve(transaction.bookId);
@@ -145,11 +152,12 @@ function Allbooks() {
         console.log(error);
       }
     };
-    // setInterval(cancelExpiredReservations, 1200000); // 1200000 milliseconds = 20 minutes
-    const id = setInterval(cancelExpiredReservations, 1200000);
+    cancelExpiredReservations()
+
+    const id = setInterval(cancelExpiredReservations, 1200000); // 1200000 milliseconds = 20 minutes
     setIntervalId(id);
 
-    // cancelExpiredReservations()
+    
 
     return () => {
       clearInterval(intervalId);
@@ -157,6 +165,10 @@ function Allbooks() {
   }, [API_URL,user]);
 
 
+
+  const handleDeleteBook = async (bookid)=>{
+
+  }
   return (
     <div className="books-page">
       <div className="books">
@@ -187,23 +199,40 @@ function Allbooks() {
           )
         )}
       </div>
+      {loadingBook && <div className="loading"></div>}
       {selectedBook && (
-        <div>
-        <div className="overlay" />
-        <div className={`bookoptions ${selectedBook ? 'show' : ''}`}>
-          <div className="bookoptions-info">
-            <p>Issued Copies :{selectedBook.bookIssuedCopies}</p>
-            <span>Reserved Copies :{selectedBook.bookReservedCopies}</span>
-            <span className="category">Category: {}</span>
-          </div>
-          <div className="reserve-options">
+  <div>
+    <div className="overlay" />
+    {user.isAdmin ? (
+      <div className={`bookoptions ${selectedBook ? 'show' : ''}`}>
+        <div className="bookoptions-info">
+          <p>Issued Copies :{selectedBook.bookIssuedCopies}</p>
+          <span>Reserved Copies :{selectedBook.bookReservedCopies}</span>
+          <span className="category">Category: {}</span>
+        </div>
+        <div className="reserve-options">
+          <button className="delete" onClick={() => handleDeleteBook(selectedBook._id)}>Delete Book</button>
           <button className="reserve" onClick={() => reserveBook(selectedBook._id)}>{loading?(<div className="loading-mini"></div>):("Reserve Book")}</button>
           <button className="cancelreserve" onClick={() => cancelReserve(selectedBook._id)}>{isloading?(<div className="loading-mini"></div>):("Cancel Reservation")}</button>
-          </div>
-          <button className="closeOptions" onClick={handleCancel}>Close</button>
         </div>
+        <button className="closeOptions" onClick={handleCancel}>Close</button>
+      </div>
+    ) : (
+      <div className={`bookoptions ${selectedBook ? 'show' : ''}`}>
+        <div className="bookoptions-info">
+          <p>Issued Copies :{selectedBook.bookIssuedCopies}</p>
+          <span>Reserved Copies :{selectedBook.bookReservedCopies}</span>
+          <span className="category">Category: {}</span>
         </div>
-      )}
+        <div className="reserve-options">
+          <button className="reserve" onClick={() => reserveBook(selectedBook._id)}>{loading?(<div className="loading-mini"></div>):("Reserve Book")}</button>
+          <button className="cancelreserve" onClick={() => cancelReserve(selectedBook._id)}>{isloading?(<div className="loading-mini"></div>):("Cancel Reservation")}</button>
+        </div>
+        <button className="closeOptions" onClick={handleCancel}>Close</button>
+      </div>
+    )}
+  </div>
+)}
     </div>
   );
 }
