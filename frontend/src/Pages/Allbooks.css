@@ -164,6 +164,13 @@
     border-radius: 5px;
 }
 
+.bookoptions .bookoptions-info .category{
+    padding: 8px 15px;
+    background-color:rgb(24, 198, 241);
+    font-weight: 700;
+    margin: 5px;
+    border-radius: 5px;
+}
 .bookoptions .reserve-options{
     display: flex;
     flex-wrap: wrap;
