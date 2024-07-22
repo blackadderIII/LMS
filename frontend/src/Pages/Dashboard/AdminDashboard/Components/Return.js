@@ -60,6 +60,7 @@ function Return() {
             await axios.put(API_URL+"api/transactions/update-transaction/"+transactionId,{
                 isAdmin:user.isAdmin,
                 transactionStatus:"Completed",
+                transactionType:"Returned",
                 returnDate:moment(new Date()).format("MM/DD/YYYY")
             })
 
@@ -80,19 +81,12 @@ function Return() {
                     userId:borrowerId
                 })
             }
-
-            const book_details = await axios.get(API_URL+"api/books/getbook/"+bookId)
-            await axios.put(API_URL+"api/books/updatebook/"+bookId,{
-                isAdmin:user.isAdmin,
-                bookIssuedCopies: book_details.data.bookIssuedCopies - 1
-            })
-
             /* Pulling out the transaction id from user active Transactions and pushing to Prev Transactions */
             await axios.put(API_URL + `api/users/${transactionId}/move-to-prevtransactions`, {
                 userId: borrowerId,
                 isAdmin: user.isAdmin
             })
-
+            
             setExecutionStatus("Completed");
             alert("Book returned to the library successfully")
         }
