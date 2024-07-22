@@ -120,9 +120,17 @@ router.put("/update-transaction/:id", async (req, res) => {
             if (transaction.transactionType === "Reserved" && req.body.transactionType === "Issued") {
                 // Update the book's reserved and issued copies
                 const book = await Book.findById(transaction.bookId);
-                console.log(book)
+                
                 book.bookReservedCopies -= 1;
                 book.bookIssuedCopies += 1;
+                await book.save();
+              }
+
+              if (transaction.transactionType === "Issued" && req.body.transactionType === "Returned") {
+                // Update the book's reserved and issued copies
+                const book = await Book.findById(transaction.bookId);
+                book.transactionType = "Returned"
+                book.bookIssuedCopies -= 1;
                 await book.save();
               }
             res.status(200).json("Transaction details updated successfully");
