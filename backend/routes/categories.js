@@ -24,4 +24,14 @@ router.post("/addcategory", async (req, res) => {
   }
 });
 
+router.get("/getcategory/:id",async (req,res)=>{
+  try {
+    const categoryId = req.params.id
+    const category = await BookCategory.findById(categoryId)
+    return res.json(category)
+  } catch (error) {
+    return res.status(504).json(error);
+  }
+})
+
 export default router;
