@@ -44,10 +44,17 @@ function Allbooks() {
   }, [searchResult]);
 
   const handleBookOptions = async (book) =>{
-    setLoadingBook(true)
+    
     if(user && (user.userType === "Student" || user.userType === "Staff")) {
+      setLoadingBook(true)
       const response = await axios.get(`${API_URL}api/books/getbook/${book._id}`);
     const updatedBook = response.data;
+    const categories = updatedBook.categories;
+    const categoryNames = await Promise.all(categories.map(async (categoryId) => {
+      const response = await axios.get(`${API_URL}api/categories/getcategory/${categoryId}`);
+      return response.data.categoryName;
+    }));
+    updatedBook.categoryNames = categoryNames;
     setLoadingBook(false)
     setSelectedBook(updatedBook);
 
@@ -164,10 +171,22 @@ function Allbooks() {
     };
   }, [API_URL,user]);
 
-
-
+// admin delete function
   const handleDeleteBook = async (bookid)=>{
-
+    try {
+      const deletebook = await axios.delete(
+        API_URL + `api/books/removebook/${bookid}`
+      );
+      if (deletebook.data === "Book has been deleted") {
+        alert("Book Has Been Deleted");
+        window.location.reload();
+        return;
+      } else {
+        alert("An error occured please refresh and try again");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <div className="books-page">
@@ -199,6 +218,7 @@ function Allbooks() {
           )
         )}
       </div>
+      
       {loadingBook && <div className="loading"></div>}
       {selectedBook && (
   <div>
@@ -208,7 +228,7 @@ function Allbooks() {
         <div className="bookoptions-info">
           <p>Issued Copies :{selectedBook.bookIssuedCopies}</p>
           <span>Reserved Copies :{selectedBook.bookReservedCopies}</span>
-          <span className="category">Category: {}</span>
+          <span className="category">Category: {selectedBook.categoryNames.join(", ")}</span>
         </div>
         <div className="reserve-options">
           <button className="delete" onClick={() => handleDeleteBook(selectedBook._id)}>Delete Book</button>
@@ -222,7 +242,7 @@ function Allbooks() {
         <div className="bookoptions-info">
           <p>Issued Copies :{selectedBook.bookIssuedCopies}</p>
           <span>Reserved Copies :{selectedBook.bookReservedCopies}</span>
-          <span className="category">Category: {}</span>
+          <span className="category">Category: {selectedBook.categoryNames.join(", ")}</span>
         </div>
         <div className="reserve-options">
           <button className="reserve" onClick={() => reserveBook(selectedBook._id)}>{loading?(<div className="loading-mini"></div>):("Reserve Book")}</button>
