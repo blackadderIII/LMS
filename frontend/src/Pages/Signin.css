@@ -58,8 +58,11 @@ form .signup-question{
 
 .signin-title {
   text-align: center;
-  font-weight: bold;
+  font-weight:200;
   margin: 0;
+  color: #02592f;
+  display: block;
+  font-family:cursive;
 }
 
 .signup-option {
@@ -83,6 +86,8 @@ form .signup-question{
   font-size: 18px;
   margin-top: 8px;
   font-weight: bold;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #02592f;
 }
 
 .signin-fields {
@@ -91,7 +96,7 @@ form .signup-question{
 }
 
 .signin-fields label {
-  color: rgb(170 166 166);
+  color:rgb(41, 37, 37);
   text-align: left;
   margin-top: 25px;
 }
@@ -107,7 +112,7 @@ form .signup-question{
 }
 
 .signin-button {
-  background-color: rgb(69, 69, 185);
+  background-color:#5ac273;
   color: white;
   padding: 18px 20px;
   margin-top: 25px;
@@ -125,6 +130,7 @@ form .signup-question{
 .forget-pass {
   text-align: center;
   display: block;
+  color: #02592f;
 }
 
 .signup-question {
@@ -132,4 +138,12 @@ form .signup-question{
   font-weight: bold;
   margin-top: 15px !important;
   padding: 15px;
+  color: #02592f;
+}
+
+.signup-answer {
+  text-align:center;
+  font-weight: bold; 
+  color: red;
+  margin-top: -20px;
 }

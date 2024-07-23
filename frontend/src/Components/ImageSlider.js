@@ -13,8 +13,8 @@ function ImageSlider() {
                         alt="First slide"
                     />
                     <Carousel.Caption>
-                        <h3>First slide label</h3>
-                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                        <h3>READING OASIS</h3>
+                        <p>Escape into Books and Enter a Realm of Endless Stories and Learning.</p>
                     </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item interval={500}>
@@ -24,8 +24,8 @@ function ImageSlider() {
                         alt="Second slide"
                     />
                     <Carousel.Caption>
-                        <h3>Second slide label</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <h3>JOURNEY THROUGH PAGES</h3>
+                        <p>Emabark on Adventures and Discoveries with Every Turn of a Page.</p>
                     </Carousel.Caption>
                 </Carousel.Item>
                 <Carousel.Item>
@@ -35,8 +35,8 @@ function ImageSlider() {
                         alt="Third slide"
                     />
                     <Carousel.Caption>
-                        <h3>Third slide label</h3>
-                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                        <h3>LIBRARY TRANQUILITY</h3>
+                        <p>Find Serenity and Inspiration in Every Corner of Our Library.</p>
                     </Carousel.Caption>
                 </Carousel.Item>
             </Carousel>
