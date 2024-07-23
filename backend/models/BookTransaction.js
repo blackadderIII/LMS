@@ -35,6 +35,10 @@ const BookTransactionSchema = new mongoose.Schema({
     transactionStatus: {
         type: String,
         default: "Active"
+    },
+    byAdmin:{
+        type:Boolean,
+        default:false
     }
 },
     {

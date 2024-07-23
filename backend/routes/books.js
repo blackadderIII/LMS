@@ -74,7 +74,7 @@ router.get("/getbook/:id", async (req, res) => {
         const book = await Book.findById(req.params.id).populate("transactions")
         res.status(200).json(book)
     }
-    catch {
+    catch(err) {
         return res.status(500).json(err)
     }
 })
@@ -180,16 +180,16 @@ router.post('/addbook', upload.single('bookCoverImage'), async (req, res) => {
 router.put("/updatebook/:id", upload.single('bookCoverImage'), async (req, res) => {
   try {
     const data = JSON.parse(req.body.data);
-    // let bookCoverImage = null;
     let bookCoverImageName = null;
     if (req.file) {
-      // const fileBuffer = fs.readFileSync(req.file.path);
-      // bookCoverImage = fileBuffer.toString('base64');
       bookCoverImageName = uploadedFileName;
     }
     const book = await Book.findById(req.params.id);
     if (!book) {
       return res.status(404).json("Book not found");
+    }
+    if(req.body.bookIssuedCopies){
+      book.bookIssuedCopies = req.body.bookIssuedCopies
     }
     book.bookName = data.bookName;
     book.alternateTitle = data.alternateTitle;
@@ -198,7 +198,7 @@ router.put("/updatebook/:id", upload.single('bookCoverImage'), async (req, res) 
     book.language = data.language;
     book.publisher = data.publisher;
     book.categories = JSON.parse(data.categories);
-    book.isAdmin = data.isAdmin;
+    
     if (req.file) {
       // book.bookCoverImage = bookCoverImage;
       book.bookCoverImageName = bookCoverImageName;
@@ -209,6 +209,7 @@ router.put("/updatebook/:id", upload.single('bookCoverImage'), async (req, res) 
     res.status(504).json(err);
   }
 });
+
 
 /* Remove book  */
 router.delete("/removebook/:id", async (req, res) => {

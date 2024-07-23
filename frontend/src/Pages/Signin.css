@@ -15,7 +15,7 @@
   background-image: url("../image2.jpg");
   background-position: calc(200% - -200px) center;
   background-size: cover;
-  transition: filter 0.3s; /* Add transition effect */
+  transition: filter 0.3s ease-in; /* Add transition effect */
   z-index: -1; /* Make sure it's behind the signin card */
 }
 
@@ -36,7 +36,6 @@
   box-shadow: 2px 5px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Add JavaScript code to toggle the blur-bg class on hover */
 
 a {
   text-decoration: none;

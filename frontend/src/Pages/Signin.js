@@ -16,32 +16,50 @@ function Signin() {
 
     const API_URL = process.env.REACT_APP_API_URL
     
+    // const loginCall = async (userCredential, dispatch) => {
+    //     dispatch({ type: "LOGIN_START" });
+    //     setLoading(true)
+    //     try {
+    //         const res = await axios.post(API_URL+"api/auth/signin", userCredential);
+    //         console.log(res.data)
+    //         if (res.data==="User not found"){   
+    //         setError("User does not Exist.")
+    //         setLoading(false)
+    //         return
+    //         }
+    //         if (res.data==="Wrong Password"){   
+    //         setError("Wrong User Id Or Password.")
+    //         setLoading(false)
+    //         return
+    //         }
+    //         dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
+    //         setLoading(false)
+    //     }
+    //     catch (err) {
+    //         dispatch({ type: "LOGIN_FAILURE", payload: err })
+    //         setError("An error occured,Please try again later.")
+    //         setLoading(false)
+    //     }
+    // }
+
     const loginCall = async (userCredential, dispatch) => {
         dispatch({ type: "LOGIN_START" });
-        setLoading(true)
+        setLoading(true);
         try {
-            const res = await axios.post(API_URL+"api/auth/signin", userCredential);
-            
-            if (res.data==="User not found"){   
-            setError("User does not Exist.")
-            setLoading(false)
-            return
-            }
-            if (res.data==="Wrong Password"){   
-            setError("Wrong User Id Or Password.")
-            setLoading(false)
-            return
-            }
-            dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
-            setLoading(false)
+          const res = await axios.post(API_URL + "api/auth/signin", userCredential);
+          console.log(res.data);
+          dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
+          setLoading(false);
+        } catch (err) {
+          if (err.response && err.response.data) {
+            setError(err.response.data);
+          } else {
+            setError("An error occurred, please try again later.");
+          }
+          dispatch({ type: "LOGIN_FAILURE", payload: err });
+          setLoading(false);
         }
-        catch (err) {
-            dispatch({ type: "LOGIN_FAILURE", payload: err })
-            setError("An error occured,Please try again later.")
-            setLoading(false)
-        }
-    }
-
+      };
     const handleForm = (e) => {
         e.preventDefault()
         isStudent

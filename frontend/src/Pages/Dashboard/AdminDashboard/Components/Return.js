@@ -18,7 +18,7 @@ function Return() {
     const [allMembersOptions, setAllMembersOptions] = useState(null)
     const [borrowerId, setBorrowerId] = useState(null)
 
-
+    
     //Fetching all Members
     useEffect(() => {
         const getMembers = async () => {
@@ -26,7 +26,7 @@ function Return() {
                 const response = await axios.get(API_URL + "api/users/allmembers")
                 setAllMembersOptions(response.data.map((member) => (
                     { value: `${member?._id}`, text: `${member?.userType === "Student" ? `${member?.userFullName}[${member?.admissionId}]` : `${member?.userFullName}[${member?.employeeId}]`}` }
-                )))
+                )))   
             }
             catch (err) {
                 console.log(err)
@@ -60,6 +60,7 @@ function Return() {
             await axios.put(API_URL+"api/transactions/update-transaction/"+transactionId,{
                 isAdmin:user.isAdmin,
                 transactionStatus:"Completed",
+                transactionType:"Returned",
                 returnDate:moment(new Date()).format("MM/DD/YYYY")
             })
 
@@ -70,27 +71,22 @@ function Return() {
             /* If the number of days after dueDate is greater than zero then decreasing points by 10 else increase by 10*/
             if(due > 0){
                 await axios.put(API_URL+"api/users/updateuser/"+borrowerId,{
-                    points:points-10
+                    points:points-10,
+                    userId: borrowerId
                 })
             }
             else if(due<=0){
                 await axios.put(API_URL+"api/users/updateuser/"+borrowerId,{
-                    points:points+10
+                    points:points+10,
+                    userId:borrowerId
                 })
             }
-
-            const book_details = await axios.get(API_URL+"api/books/getbook/"+bookId)
-            await axios.put(API_URL+"api/books/updatebook/"+bookId,{
-                isAdmin:user.isAdmin,
-                bookCountAvailable:book_details.data.bookCountAvailable + 1
-            })
-
             /* Pulling out the transaction id from user active Transactions and pushing to Prev Transactions */
             await axios.put(API_URL + `api/users/${transactionId}/move-to-prevtransactions`, {
                 userId: borrowerId,
                 isAdmin: user.isAdmin
             })
-
+            
             setExecutionStatus("Completed");
             alert("Book returned to the library successfully")
         }

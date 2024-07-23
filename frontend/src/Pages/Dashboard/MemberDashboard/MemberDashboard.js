@@ -185,7 +185,7 @@ function MemberDashboard() {
                 </div>
               </div>
               <div className="specific-right">
-                <div className="specific-right-top">
+                {/* <div className="specific-right-top">
                   <p className="specific-right-topic">
                     <b>Points</b>
                   </p>
@@ -201,8 +201,8 @@ function MemberDashboard() {
                   >
                     540
                   </p>
-                </div>
-                <div className="dashboard-title-line"></div>
+                </div> */}
+                {/* <div className="dashboard-title-line"></div> */}
                 <div className="specific-right-bottom">
                   <p className="specific-right-topic">
                     <b>Rank</b>

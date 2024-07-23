@@ -14,7 +14,8 @@ router.post("/add-transaction", async (req, res) => {
                 borrowerName: req.body.borrowerName,
                 transactionType: req.body.transactionType,
                 fromDate: req.body.fromDate,
-                toDate: req.body.toDate
+                toDate: req.body.toDate,
+                byAdmin:req.body.isAdmin
             })
             const transaction = await newtransaction.save()
             // Update bookReservedCopies field in Book model
@@ -49,7 +50,8 @@ router.post("/add-reservation", async (req, res) => {
                 borrowerName: req.body.borrowerName,
                 transactionType: req.body.transactionType,
                 fromDate: req.body.fromDate,
-                toDate: req.body.toDate
+                toDate: req.body.toDate,
+                byAdmin:req.body.byAdmin
             })
             const transaction = await newtransaction.save()
             // Update bookReservedCopies field in Book model
@@ -118,9 +120,17 @@ router.put("/update-transaction/:id", async (req, res) => {
             if (transaction.transactionType === "Reserved" && req.body.transactionType === "Issued") {
                 // Update the book's reserved and issued copies
                 const book = await Book.findById(transaction.bookId);
-                console.log(book)
+                
                 book.bookReservedCopies -= 1;
                 book.bookIssuedCopies += 1;
+                await book.save();
+              }
+
+              if (transaction.transactionType === "Issued" && req.body.transactionType === "Returned") {
+                // Update the book's reserved and issued copies
+                const book = await Book.findById(transaction.bookId);
+                book.transactionType = "Returned"
+                book.bookIssuedCopies -= 1;
                 await book.save();
               }
             res.status(200).json("Transaction details updated successfully");
@@ -137,11 +147,16 @@ router.delete("/remove-transaction/:id", async (req, res) => {
         const book = await Book.findById(data.bookId);
         await book.updateOne({ $pull: { transactions: req.params.id } });
     
-        if (data.transactionType === "Reserved") {
+        
+    if (data.transactionType === "Reserved") {
+        if (book.bookReservedCopies > 0) {
           book.bookReservedCopies -= 1;
-        } else if (data.transactionType === "Issued") {
+        }
+      } else if (data.transactionType === "Issued") {
+        if (book.bookIssuedCopies > 0) {
           book.bookIssuedCopies -= 1;
         }
+      }
         await book.save();
     
         res.status(200).json("Transaction deleted successfully");

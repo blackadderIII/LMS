@@ -26,6 +26,16 @@ router.get("/allmembers", async (req,res)=>{
     }
 })
 
+router.get("/getallmembers", async (req,res)=>{
+    try{
+        const users = await User.find({}).sort({_id:-1})
+        res.status(200).json(users)
+    }
+    catch(err){
+        return res.status(500).json(err);
+    }
+})
+
 // user stats
 router.get("/countmembers", async (req, res) => {
     try {
@@ -39,17 +49,17 @@ router.get("/countmembers", async (req, res) => {
 /* Update user by id */
 router.put("/updateuser/:id", async (req, res) => {
     if (req.body.userId === req.params.id) {
-        if (req.body.password) {
-            try {
-                const salt = await bcrypt.genSalt(10);
-                req.body.password = await bcrypt.hash(req.body.password, salt);
-            } catch (err) {
-                return res.status(500).json(err);
-            }
-        }
-        if (req.body.isAdmin && req.body.userId!== req.params.id) {
-            return res.status(403).json("You cannot update the isAdmin field of another user!");
-        }
+        // if (req.body.password) {
+        //     try {
+        //         const salt = await bcrypt.genSalt(10);
+        //         req.body.password = await bcrypt.hash(req.body.password, salt);
+        //     } catch (err) {
+        //         return res.status(500).json(err);
+        //     }
+        // }
+        // if (req.body.isAdmin && req.body.userId!== req.params.id) {
+        //     return res.status(403).json("You cannot update the isAdmin field of another user!");
+        // }
         try {
             const user = await User.findByIdAndUpdate(req.params.id, {
                 $set: req.body,
@@ -93,19 +103,19 @@ router.put("/:id/reserve-to-activetransactions" , async (req,res)=>{
         }
 })
 
-/* Adding Reservation to previous transactions list and removing from active transactions list */
-router.put("/:id/reserve-to-prevtransactions", async (req,res)=>{
-        try{
-            const user = await User.findById(req.body.userId);
-            await user.updateOne({$pull:{activeTransactions:req.params.id}})
-            await user.updateOne({$push:{prevTransactions:req.params.id}})
-            res.status(200).json("Added to Prev transaction Transaction")
-        }
-        catch(err){
-            res.status(500).json(err)
-        }
-    }
-)
+// /* Adding Reservation to previous transactions list and removing from active transactions list */
+// router.put("/:id/reserve-to-prevtransactions", async (req,res)=>{
+//         try{
+//             const user = await User.findById(req.body.userId);
+//             await user.updateOne({$pull:{activeTransactions:req.params.id}})
+//             await user.updateOne({$push:{prevTransactions:req.params.id}})
+//             res.status(200).json("Added to Prev transaction Transaction")
+//         }
+//         catch(err){
+//             res.status(500).json(err)
+//         }
+//     }
+// )
 /* Adding transaction to previous transactions list and removing from active transactions list */
 router.put("/:id/move-to-prevtransactions", async (req,res)=>{
     if(req.body.isAdmin){

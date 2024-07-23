@@ -6,7 +6,7 @@ const Signup = () => {
   const [user, setUser] = useState({
     userType: "Staff",
     userFullName: "",
-    admissionId: "",
+    admissionId: null,
     employeeId: "",
     age: "",
     dob: "",
