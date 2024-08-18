@@ -2,9 +2,18 @@
   display: grid;
   place-items: center;
   height: 100%;
-  background-color: wheat;
-  position: relative;
+  background-image: url("../image2.jpg");
+  background-position: calc(200% - -200px) center;
+  background-size: cover;
+  transition: filter 0.3s; /* Add transition effect */
+  z-index: -1; /* Make sure it's behind the signin card */
 }
+
+.signin-container.blur-bg::before {
+  filter: blur(10px); /* Apply blur filter to the background */
+}
+
+
 
 a {
   text-decoration: none;
@@ -36,6 +45,7 @@ form {
   text-align: center;
   font-weight: bold;
   margin: 0;
+  color: #02592f;
 }
 
 .signup-option {
@@ -58,7 +68,7 @@ form {
 }
 
 .signup-fields label {
-  color: rgb(170 166 166);
+  color: rgb(26, 24, 24);
   text-align: left;
   margin-top: 5px;
 }
@@ -74,7 +84,7 @@ form {
 }
 
 .signup-button {
-  background-color: rgb(69, 69, 185);
+  background-color: #5ac273;
   color: white;
   padding: 18px 20px;
   margin-top: 25px;

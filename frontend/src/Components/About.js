@@ -11,23 +11,11 @@ function About() {
                 </div>
                 <div>
                     <p className="about-text">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting 
-                        industry. Lorem Ipsum has been the industry's standard dummy text 
-                        ever since the 1500s, when an unknown printer took a galley of type 
-                        and scrambled it to make a type specimen book. It has survived not 
-                        only five centuries.<br/>
+                        Welcome to KNUST Library System (KLS), the school library dedicated to supporting students, staff and faculty with a wide range of resources. Our collection includes books, academic journals, theses and digital media, all regularly updated to ensure relevance.<br/>
                         <br/>
-                        Contrary to popular belief, Lorem Ipsum is not simply random text. 
-                        It has roots in a piece of classical Latin literature from 45 BC, 
-                        making it over 2000 years old. Richard McClintock, a Latin professor 
-                        at Hampden-Sydney College in Virginia, looked up one of the more obscure 
-                        Latin words, consectetur, from a Lorem Ipsum passage.<br/>
+                        At KLS, you can easily reserve books, theses and project works online and then pick them up from the librarian for a hassle-free borrowing experience. This feature simplifies the process of accessing books by allowing reservations to be made conveniently from anywhere. We aim to make borrowing books a seamsless and effiecient process for all our libary users.<br/>
                         <br/>
-                        There are many variations of passages of Lorem Ipsum available, 
-                        but the majority have suffered alteration in some form, by injected 
-                        humour<br/>
-                        <br/>
-                        Your suggestions for improvement are always welcome!
+                        Dive into the a world of books with just a few clicks and a librarian visit. Enjoy the convenience and happy reading.<br/>
                     </p>
                 </div>
             </div>
