@@ -2,11 +2,12 @@ import express from "express";
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import nodemailer from 'nodemailer';
-
+import dotenv from "dotenv";
 const router = express.Router();
 
-const DevEmail = "kobbina50@gmail.com";
-const DevPass = 'laejrjctqjbcuygp'
+dotenv.config();
+const DevEmail = process.env.DevEmail ;
+const DevPass =  process.env.DevPass;
 
 export const transporter = nodemailer.createTransport({
     service: 'gmail',
