@@ -16,7 +16,7 @@ function Footer() {
                         <p>KNUST (College of Science)</p>
                         <p>Kumasi</p>
                         <p>Ghana</p>
-                        <p><b>Email:</b>library@knust.edu.gh</p>
+                        <p><b>Email:</b>knustlibrarysystem@gmail.com</p>
                     </div>
                     
                     <div className='librarian-details'>
@@ -33,7 +33,7 @@ function Footer() {
                 </div>
             </div>
             <div className='copyright-details'>
-                <p className='footer-copyright'>&#169; 2024 copyright all right reserved<br /><span>Work in progress</span></p>
+                <p className='footer-copyright'>&#169; 2024 copyright all right reserved<br /></p>
             </div>
         </div>
     )

@@ -2,7 +2,7 @@
   display: grid;
   place-items: center;
   height: 100vh;
-  background-color: wheat;
+  background-color: rgb(224, 219, 219);
   position: relative;
 }
 
@@ -27,7 +27,7 @@
 /* Sidebar */
 
 .dashboard-options {
-  background-color: rgb(24, 33, 62);
+  background-color: #02592f;
   color: wheat;
   display: flex;
   flex-direction: column;
@@ -40,7 +40,7 @@
 .dashboard-logo {
   margin-top: 50px;
   margin-bottom: 50px !important;
-  color: rgb(234, 68, 74);
+  color: rgb(160, 11, 16);
   font-size: 30px;
   font-weight: 800;
   text-align: center;
@@ -49,8 +49,8 @@
 .dashboard-option {
   text-decoration: none;
   padding: 15px;
-  border-bottom: 0.5px solid salmon;
-  border-top: 1px solid rgb(234, 68, 74, 0.5);
+  border-bottom: 0.5px solid rgb(6, 175, 6);
+  border-top: 1px solid rgb(6, 175, 6) ;
   color: #ffff;
   font-weight: 700;
   text-align: left;
@@ -60,15 +60,15 @@
 }
 
 .dashboard-option:hover {
-  color: rgb(234, 68, 74);
-  border-left: 5px solid rgb(234, 68, 74);
+  color: rgb(6, 175, 6);
+  border-left: 5px solid rgb(6, 175, 6);
   transition: all 0.5s ease;
   background-color: #ddd;
 }
 
 .dashboard-option.clicked {
-  color: rgb(234, 68, 74);
-  border-left: 5px solid rgb(234, 68, 74);
+  color: rgb(6, 175, 6);
+  border-left:rgb(6, 175, 6);
   transition: all 0.5s ease;
   background-color: #ddd;
 }
@@ -79,6 +79,7 @@
   display: flex;
   flex: 0.75;
   width: 80vw;
+  background-color: #eef8f3;
 }
 
 .dashboard-option-icon {
@@ -92,6 +93,7 @@
   flex-direction: column;
   flex: 1;
   overflow-y: scroll;
+  background-color: #eef8f3;
 }
 
 .dashboard-addbooks-content::-webkit-scrollbar,
@@ -201,8 +203,8 @@
 .transaction-form-submit {
   padding: 8px 10px;
   border: 2px solid wheat;
-  background-color: rgb(234, 68, 74);
-  color: wheat;
+  background-color: rgb(238, 18, 48);
+  color: white;
   font-weight: 600;
   margin-top: 15px;
   border-radius: 5px;
@@ -249,7 +251,7 @@
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: center;
-  background-color: rgb(24, 33, 62);
+  background-color:#02592f;
   color: white;
 }
 

@@ -10,6 +10,14 @@
   border-radius: 50%;
 }
 
+.dashboard-logo img{
+  height: 100px;
+  width: 100px;
+}
+
+.dashboard-logo .logo-name{
+  color: white;
+}
 .member-profile-content,
 .member-activebooks-content,
 .member-reservedbooks-content,
@@ -57,7 +65,7 @@
 
 .user-id {
   font-size: 18px;
-  color: rgb(161, 151, 0);
+  color: rgb(231, 217, 12);
   font-weight: bold;
 }
 
@@ -162,7 +170,7 @@
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
-  background-color: rgb(24, 33, 62);
+  background-color: #02592f;
   color: white;
 }
 

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "../AdminDashboard/AdminDashboard.css";
 import "./MemberDashboard.css";
 
-import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
+
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import BookIcon from "@material-ui/icons/Book";
 import HistoryIcon from "@material-ui/icons/History";
@@ -61,7 +61,7 @@ function MemberDashboard() {
           className={sidebar ? "dashboard-options active" : "dashboard-options"}
         >
           <div className="dashboard-logo">
-            <LibraryBooksIcon style={{ fontSize: 50 }} />
+          <img src={`/assets/images/library-Logo.png`} alt="Logo"/>
             <p className="logo-name">KLS</p>
           </div>
           <a
@@ -205,7 +205,7 @@ function MemberDashboard() {
                 {/* <div className="dashboard-title-line"></div> */}
                 <div className="specific-right-bottom">
                   <p className="specific-right-topic">
-                    <b>Rank</b>
+                    <b>Credit</b>
                   </p>
                   <p
                     style={{

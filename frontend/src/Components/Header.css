@@ -14,15 +14,22 @@
 }
 
 .logo-nav a{
+    margin-top: 40px;
     font-size: 20px;
-    color: #f8cd0f;
+    color:white;
     font-weight: 800;
 }
 
 .logo-nav a:hover{
-    color: wheat;
+    color: #f8cd0f;
     transition: all ease 0.5s;
 }
+
+.logo-nav a img{
+    height: 60px;
+    width:60px;
+}
+
 
 .search-input{
     width: 100%;
@@ -71,7 +78,7 @@
 }
 
 .option a:hover{
-    color: wheat;
+    color: #f8cd0f;
     transition: all ease 0.5s;
 }
 

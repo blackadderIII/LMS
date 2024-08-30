@@ -37,7 +37,7 @@ function Header() {
     <div className="header">
       <div className="logo-nav">
         <Link to="/">
-          <a href="#home">KLS</a>
+          <a href="#home"><img src={`/assets/images/library-Logo.png`} alt="Logo"/>KLS</a>
         </Link>
       </div>
       <div className="nav-right">
@@ -74,7 +74,7 @@ function Header() {
             }}
           >
             <Link to="/books">
-              <a href="#books">Books</a>
+              <a href="#books">Resources</a>
             </Link>
           </li>
           <li
