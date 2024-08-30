@@ -9,7 +9,7 @@ function ImageSlider() {
                 <Carousel.Item interval={1000}>
                     <img
                         className="d-block w-100"
-                        src={`assets/images/slide2.jpg`}
+                        src={`assets/images/image5.jpg`}
                         alt="First slide"
                     />
                     {/* <Carousel.Caption>
