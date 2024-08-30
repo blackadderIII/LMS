@@ -90,7 +90,7 @@ function AdminDashboard() {
           className={sidebar ? "dashboard-options active" : "dashboard-options"}
         >
           <div className="dashboard-logo">
-            <LibraryBooksIcon style={{ fontSize: 50 }} />
+          <img src={`/assets/images/library-Logo.png`} alt="Logo"/>
             <p className="logo-name">KLS</p>
           </div>
           <p
@@ -227,9 +227,9 @@ function AdminDashboard() {
                 </div>
               </div>
             </div>
-            <div className="user-details-leaderboard">
+            {/* <div className="user-details-leaderboard">
             <h3 style={{color:"green",marginLeft:"30%",marginTop:"2.5%"}}>KNUST Library System Top Members</h3>
-              {/* <table className="member-leaderboard">
+              <table className="member-leaderboard">
                 <tr>
                   <th>S.No</th>
                   <th>User</th>
@@ -264,8 +264,8 @@ function AdminDashboard() {
                     <td colSpan={7}>No members found</td>
                   </tr>
                 )}
-              </table> */}
-            </div>
+              </table>
+            </div> */}
           </div>
 
           <div
