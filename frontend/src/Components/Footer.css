@@ -3,6 +3,8 @@
   flex-direction: column;
   background-color: rgb(255, 255, 255);
   color: rgb(12, 12, 12);
+  font-size: larger;
+  font-weight: 700;
 }
 
 .footer-data {
