@@ -189,7 +189,7 @@ function AddTransaction() {
       }
     };
     getBookDetails();
-  }, [bookId]);
+  }, [bookId,API_URL]);
 
   const handleDelete = async (transactionid,borrowerId) => {
     try {

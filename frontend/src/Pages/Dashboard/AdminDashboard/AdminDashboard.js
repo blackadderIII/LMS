@@ -51,18 +51,18 @@ function AdminDashboard() {
     getMemberDetails();
   }, [API_URL, user]);
 
-  //Fetch Members
-  useEffect(() => {
-    const getMembers = async () => {
-      try {
-        const response = await axios.get(API_URL + "api/users/getallmembers");
-        setAllMembers(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getMembers();
-  }, [API_URL]);
+  // //Fetch Members
+  // useEffect(() => {
+  //   const getMembers = async () => {
+  //     try {
+  //       const response = await axios.get(API_URL + "api/users/getallmembers");
+  //       setAllMembers(response.data);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+  //   getMembers();
+  // }, [API_URL]);
 
   /* Logout Function*/
   const logout = () => {
@@ -229,7 +229,7 @@ function AdminDashboard() {
             </div>
             <div className="user-details-leaderboard">
             <h3 style={{color:"green",marginLeft:"30%",marginTop:"2.5%"}}>KNUST Library System Top Members</h3>
-              <table className="member-leaderboard">
+              {/* <table className="member-leaderboard">
                 <tr>
                   <th>S.No</th>
                   <th>User</th>
@@ -264,7 +264,7 @@ function AdminDashboard() {
                     <td colSpan={7}>No members found</td>
                   </tr>
                 )}
-              </table>
+              </table> */}
             </div>
           </div>
 
