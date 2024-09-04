@@ -112,7 +112,7 @@ function GetMember() {
                         <div className="specific-right">
                             <div className="dashboard-title-line"></div>
                             <div style={{ display: "flex", flexDirection: "column", flex: "0.5" }}>
-                                <p style={{ fontSize: "20px", display: "flex", alignItems: "center", justifyContent: "center" }}><b>Rank</b></p>
+                                <p style={{ fontSize: "20px", display: "flex", alignItems: "center", justifyContent: "center" }}><b>Credit</b></p>
                                 <p style={{ fontSize: "25px", fontWeight: "500", display: "flex", alignItems: "center", justifyContent: "center", marginTop: "15px" }}>{memberDetails?.points}</p>
                             </div>
                         </div>

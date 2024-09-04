@@ -26,7 +26,7 @@ function ReservedBooks() {
             <h className='reservedbooks-title'>BOOKS ON HOLD</h>
             <table className='reservedbooks-table'>
                 <tr>
-                    <th>Name</th>
+    
                     <th>Book</th>
                     <th>Issued On</th>
                     <th>Expected Return Date</th>
@@ -35,7 +35,6 @@ function ReservedBooks() {
                     recentTransactions.map((transaction, index) => {
                         return (
                             <tr key={index}>
-                                <td>{transaction.borrowerName}</td>
                                 <td>{transaction.bookName}</td>
                                 <td>{transaction.updatedAt.slice(0, 10)}</td>
                                 <td>{transaction.toDate}</td>
