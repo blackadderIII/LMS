@@ -16,7 +16,7 @@ function Footer() {
                         <p>KNUST (College of Science)</p>
                         <p>Kumasi</p>
                         <p>Ghana</p>
-                        <p><b>Email:</b>example@gmail.com</p>
+                        <p><b>Email:</b>knustlibrarysystem@gmail.com</p>
                     </div>
                     
                     <div className='librarian-details'>
@@ -27,13 +27,13 @@ function Footer() {
                     </div>
                 </div>
                 <div className="contact-social" >
-                    <a href='https://x.com/knustgh?s=21&t=iTGxFnGwbXuhh-I9zocTGw' target='_blank' rel="noreferrer"   className='social-icon'><TwitterIcon style={{ fontSize: 40,color:"rgb(283,83,75)"}} /></a>
-                    <a href='https://www.linkedin.com/groups/772157' target='_blank'rel="noreferrer"  className='social-icon'><LinkedInIcon style={{ fontSize: 40,color:"rgb(283,83,75)"}} /></a>
-                    <a href='https://www.instagram.com/knust.gh?igsh=MW5zb3hsdDE2aTZhcw==' target='_blank' rel="noreferrer" className='social-icon'><InstagramIcon style={{ fontSize: 40,color:"rgb(283,83,75)"}} /></a>
+                    <a  href='https://x.com/knustgh?s=21&t=iTGxFnGwbXuhh-I9zocTGw' target='_blank' rel="noreferrer"   className='social-icon-twitter'><TwitterIcon style={{ fontSize: 40,color:"rgb(0, 110, 255)"}} /></a>
+                    <a href='https://www.linkedin.com/groups/772157' target='_blank'rel="noreferrer"  className='social-icon-linkedin'><LinkedInIcon style={{ fontSize: 40,color:"rgb(2, 83, 189)"}} /></a>
+                    <a href='https://www.instagram.com/knust.gh?igsh=MW5zb3hsdDE2aTZhcw==' target='_blank' rel="noreferrer" className='social-icon-insta'><InstagramIcon style={{ fontSize: 40,color:"rgb(243, 65, 11)"}} /></a>
                 </div>
             </div>
             <div className='copyright-details'>
-                <p className='footer-copyright'>&#169; 2024 copyright all right reserved<br /><span>Work in progress</span></p>
+                <p className='footer-copyright'>&#169; 2024 copyright all right reserved<br /></p>
             </div>
         </div>
     )

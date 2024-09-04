@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 
+
 function AddTransaction() {
   const API_URL = process.env.REACT_APP_API_URL;
   const [isLoading, setIsLoading] = useState(false);
@@ -84,11 +85,6 @@ function AddTransaction() {
               isAdmin: user.isAdmin,
             }
           );
-
-          // await axios.put(API_URL + "api/books/updatebook/" + bookId, {
-          //   isAdmin: user.isAdmin,
-          //   bookCountAvailable: book_details.data.bookCountAvailable,
-          // });
 
           setRecentTransactions([response.data, ...recentTransactions]);
           setBorrowerId("");
@@ -193,15 +189,10 @@ function AddTransaction() {
       }
     };
     getBookDetails();
-  }, [bookId]);
+  }, [bookId,API_URL]);
 
   const handleDelete = async (transactionid,borrowerId) => {
     try {
-      /* Pulling out the transaction id from user active Transactions and pushing to Prev Transactions */
-      await axios.put(API_URL + `api/users/${transactionid}/move-to-prevtransactions`, {
-        userId: borrowerId,
-        isAdmin:user.isAdmin
-    })
       const deleteTransaction = await axios.delete(
         API_URL + `api/transactions/remove-transaction/${transactionid}`
       );

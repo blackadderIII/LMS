@@ -24,7 +24,7 @@ function RecentAddedBooks() {
 
     return (
         <div className='recentaddedbooks-container'>
-            <h className='recentbooks-title'>Recent Uploads</h>
+            <h className='recentbooks-title'>RECENT UPLOADS</h>
             {loading ? (
           <div className='loading-mini'></div>
         ) : recentBook.length > 0 ? (

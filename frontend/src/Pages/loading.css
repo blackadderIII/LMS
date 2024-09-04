@@ -6,11 +6,12 @@
   border-right: 4px solid greenyellow;
   border-bottom: 4px solid transparent;
   border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
+  position: fixed; /* instead of absolute, use fixed to center it on the screen */
+    top: 50%;
+    left: 50%;
   transform: translate(-50%, -50%);
   animation: spin 0.7s linear infinite;
+  z-index: 10000;
 }
 
 .loading-mini {

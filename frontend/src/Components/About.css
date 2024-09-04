@@ -1,8 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
 
 .about-box{
-    background-color: rgb(16,25,13);
+    background-color: #02592f;
 }
+
 
 /* Mobile View */
 @media screen and (max-width: 768px){
@@ -23,7 +24,7 @@
 /* Desktop View */
 .about-title{
     position: relative;
-    color: rgb(238,129,30);
+    color: #f8cd0f;
     text-align: center;
     font-size: 32px;
     padding: 25px;
@@ -35,6 +36,7 @@
     border-radius: 25px;
     padding: 15px;
 }
+
 
 @media screen and (min-width:768px) {
     .about-data p{

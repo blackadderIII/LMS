@@ -6,7 +6,7 @@ const Signup = () => {
   const [user, setUser] = useState({
     userType: "Staff",
     userFullName: "",
-    admissionId: "",
+    admissionId: null,
     employeeId: "",
     age: "",
     dob: "",
@@ -45,6 +45,8 @@ const Signup = () => {
     }
   };
 
+  
+
   return (
     <div className="signup-container">
       <div className="signup-card">
@@ -57,7 +59,7 @@ const Signup = () => {
           </div>
 
           <div className="signup-fields">
-            <label>Full Name:</label>
+            <label>Full Name</label>
             <input
             className='signup-textbox'
               type="text"
@@ -67,7 +69,7 @@ const Signup = () => {
               onChange={handleChange}
             />
             <br />
-            <label>Employee ID:</label>
+            <label>Employee ID</label>
             <input
             className='signup-textbox'
               type="text"
@@ -77,17 +79,17 @@ const Signup = () => {
               onChange={handleChange}
             />
             <br />
-            <label>Age:</label>
+            <label>Age</label>
             <input
             className='signup-textbox'
               type="number"
               name="age"
-              placeholder="Enter age"
+              placeholder="Enter Age"
               value={user.age}
               onChange={handleChange}
             />
             <br />
-            <label>Date of Birth:</label>
+            <label>Date of Birth</label>
             <input
             className='signup-textbox'
               type="date"
@@ -96,7 +98,7 @@ const Signup = () => {
               onChange={handleChange}
             />
             <br />
-            <label>Gender:</label>
+            <label>Gender</label>
             <input
             className='signup-textbox'
               type="text"
@@ -106,7 +108,7 @@ const Signup = () => {
               onChange={handleChange}
             />
             <br />
-            <label>Address:</label>
+            <label>Address</label>
             <input
             className='signup-textbox'
               type="text"
@@ -116,17 +118,17 @@ const Signup = () => {
               onChange={handleChange}
             />
             <br />
-            <label>Mobile Number:</label>
+            <label>Mobile Number</label>
             <input
             className='signup-textbox'
               type="number"
               name="mobileNumber"
-              placeholder="Enter Phonenumber"
+              placeholder="Enter Phone Number"
               value={user.mobileNumber}
               onChange={handleChange}
             />
             <br />
-            <label>Email:</label>
+            <label>Email</label>
             <input
             className='signup-textbox'
               type="email"
@@ -136,10 +138,10 @@ const Signup = () => {
               onChange={handleChange}
             />
             <br />
-            <label>Password:</label>
+            <label>Password</label>
             <input
             className='signup-textbox'
-              type="password" minLength='6' placeholder="Enter Password"
+              type="password" minLength='6' placeholder="Create Password"
               name="password"
               value={user.password}
               onChange={handleChange}
