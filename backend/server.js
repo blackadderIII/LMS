@@ -1,4 +1,3 @@
-import serverless from "serverless-http";
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -12,6 +11,7 @@ import categoryRoutes from "./routes/categories.js";
 /* App Config */
 dotenv.config();
 const app = express();
+const port = process.env.PORT || 4000;
 
 /* Middlewares */
 app.use(express.json());
@@ -38,13 +38,17 @@ mongoose.connect(
   }
 );
 
-app.get("/test", (req, res) => {
-  res.send('Hello');
-});
+ 
+
+app.get("/test",(req,res) =>{
+  res.send('Hello')
+})
 
 app.get("/", (req, res) => {
   res.status(200).send("Welcome to LibraryApp");
 });
 
-// Export the app to be used by the Netlify function
-export const handler = serverless(app);
+/* Port Listening In */
+app.listen(port, () => {
+  console.log(`Server is running in PORT ${port}`);
+});
